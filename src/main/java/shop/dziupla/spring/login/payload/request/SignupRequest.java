@@ -1,4 +1,4 @@
-package com.bezkoder.spring.login.payload.request;
+package shop.dziupla.spring.login.payload.request;
 
 import java.util.Set;
 

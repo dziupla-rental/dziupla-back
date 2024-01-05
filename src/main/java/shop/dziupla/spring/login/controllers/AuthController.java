@@ -1,4 +1,4 @@
-package com.bezkoder.spring.login.controllers;
+package shop.dziupla.spring.login.controllers;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,17 +22,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bezkoder.spring.login.models.ERole;
-import com.bezkoder.spring.login.models.Role;
-import com.bezkoder.spring.login.models.User;
-import com.bezkoder.spring.login.payload.request.LoginRequest;
-import com.bezkoder.spring.login.payload.request.SignupRequest;
-import com.bezkoder.spring.login.payload.response.UserInfoResponse;
-import com.bezkoder.spring.login.payload.response.MessageResponse;
-import com.bezkoder.spring.login.repository.RoleRepository;
-import com.bezkoder.spring.login.repository.UserRepository;
-import com.bezkoder.spring.login.security.jwt.JwtUtils;
-import com.bezkoder.spring.login.security.services.UserDetailsImpl;
+import shop.dziupla.spring.login.models.ERole;
+import shop.dziupla.spring.login.models.Role;
+import shop.dziupla.spring.login.models.User;
+import shop.dziupla.spring.login.payload.request.LoginRequest;
+import shop.dziupla.spring.login.payload.request.SignupRequest;
+import shop.dziupla.spring.login.payload.response.UserInfoResponse;
+import shop.dziupla.spring.login.payload.response.MessageResponse;
+import shop.dziupla.spring.login.repository.RoleRepository;
+import shop.dziupla.spring.login.repository.UserRepository;
+import shop.dziupla.spring.login.security.jwt.JwtUtils;
+import shop.dziupla.spring.login.security.services.UserDetailsImpl;
 
 //for Angular Client (withCredentials)
 //@CrossOrigin(origins = "http://localhost:8081", maxAge = 3600, allowCredentials="true")

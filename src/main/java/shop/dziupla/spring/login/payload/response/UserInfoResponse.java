@@ -1,4 +1,4 @@
-package com.bezkoder.spring.login.payload.response;
+package shop.dziupla.spring.login.payload.response;
 
 import java.util.List;
 

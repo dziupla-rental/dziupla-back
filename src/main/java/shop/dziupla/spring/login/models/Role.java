@@ -1,4 +1,4 @@
-package com.bezkoder.spring.login.models;
+package shop.dziupla.spring.login.models;
 
 import jakarta.persistence.*;
 
