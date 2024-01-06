@@ -1,6 +1,6 @@
 package shop.dziupla.spring.endpoints.request;
 
-public class ReqEmployeeDetails {
+public class ReqID {
     long id;
 
     public long getId() {

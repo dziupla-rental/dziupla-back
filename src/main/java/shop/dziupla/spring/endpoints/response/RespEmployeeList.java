@@ -8,6 +8,9 @@ public class RespEmployeeList {
 
     EmployeeListEntry employees[];
 
+    public RespEmployeeList() {
+    }
+
     public RespEmployeeList(String[] offices, String[] positions, EmployeeListEntry[] employees) {
         this.offices = offices;
         this.positions = positions;

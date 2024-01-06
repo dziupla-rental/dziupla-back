@@ -2,7 +2,7 @@ package shop.dziupla.spring.login.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-import shop.dziupla.spring.endpoints.request.ReqEmployeeDetails;
+import shop.dziupla.spring.endpoints.request.ReqID;
 import shop.dziupla.spring.endpoints.request.ReqEmployeeModify;
 import shop.dziupla.spring.endpoints.response.RespBasic;
 import shop.dziupla.spring.endpoints.response.entries.EmployeeListEntry;
@@ -27,7 +27,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/details")
-    public RespEmployeeDetails detailsAccess(@Valid @RequestBody ReqEmployeeDetails request) {
+    public RespEmployeeDetails detailsAccess(@Valid @RequestBody ReqID request) {
         //   request.getId(); // TODO wyszukanie pracownika z id
         RespEmployeeDetails response = new RespEmployeeDetails();
         response.setFirst_name("Jan");
@@ -40,7 +40,7 @@ public class EmployeeController {
     @GetMapping("/modify")
     public RespBasic detailsAccess(@Valid @RequestBody ReqEmployeeModify request) {
 
-        RespBasic output = new RespBasic("OK", "");
+        RespBasic response = new RespBasic("OK", "");
         // request has the same fields as RespEmoployeeDetails + action
         switch (request.getAction()) {
             case "add": // TODO dodawanie nowego pracownika
@@ -50,9 +50,9 @@ public class EmployeeController {
             case "modify": // TODO modyfikowanie pracownika
                 break;
             default:
-                output.setStatus("Error");
-                output.setError("'%s' is not a valid action for an employee".formatted(request.getAction()));
+                response.setStatus("Error");
+                response.setError("'%s' is not a valid action for an employee".formatted(request.getAction()));
         }
-        return output;
+        return response;
     }
 }
