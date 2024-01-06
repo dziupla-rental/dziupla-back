@@ -17,7 +17,7 @@ public class Photo {
 
     @NotBlank
     @Size(max = 20)
-    @OneToOne(mappedBy = "photoId")
+    @OneToOne(mappedBy = "photo")
     private Car car;
 
 
