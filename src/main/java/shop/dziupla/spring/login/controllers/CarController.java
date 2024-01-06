@@ -16,8 +16,8 @@ import shop.dziupla.spring.endpoints.response.entries.EmployeeListEntry;
 @RestController
 @RequestMapping("/api/car")
 public class CarController {
-    // TODO zabezpieczenia
-    // TODO podpięcie do modelu
+    // TODO autoryzacja wybranyuch ról
+    // TODO podpięcie do modelu danych
     @GetMapping("/list")
     public RespCarList listAccess(@Valid @RequestBody ReqCarList request) {
         RespCarList response = new RespCarList();

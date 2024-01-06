@@ -9,6 +9,7 @@ import shop.dziupla.spring.endpoints.response.RespBasic;
 @RestController
 @RequestMapping("/api/rental")
 public class RentalController {
+    // TODO autoryzacja
     @GetMapping("/modify")
     public RespBasic detailsAccess(@Valid @RequestBody ReqRentalModify request) {
 
