@@ -15,19 +15,15 @@ public class Car {
     private Long id;
 
     @NotBlank
-    @Size(max = 20)//float ma size?
     private float cost;
 
     @NotBlank
-    @Size(max = 20)
     private float deposit;
 
     @NotBlank
-    @Size(max = 50)//int ma size?
     private int insuranceNumber;
 
     @NotBlank
-    @Size(max = 120)//boolean ma size?
     private boolean available;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -37,7 +33,6 @@ public class Car {
     private Set<DriverLicenseCategory> licences = new HashSet<>();
 
     @NotBlank
-    @Size(max = 120)
     private long licenseId;
 
     @NotBlank
@@ -45,15 +40,12 @@ public class Car {
     private String model;
 
     @NotBlank
-    @Size(max = 120)
     private long officeId;
 
     @NotBlank
-    @Size(max = 120)
     private int seatNumber;
 
     @NotBlank
-    @Size(max = 120)
     private boolean technicalStatus;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -63,6 +55,13 @@ public class Car {
     private Set<CarType> types = new HashSet<>();
     public Car() {
     }
+    @NotBlank
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private Photo photo;
+
+    @NotBlank
+    private long photoId;
 
     public Car(float cost, float deposit, int insuranceNumber, long licenseId, String model, long officeId, int seatNumber) {//new cars technicalStatus true by default and is available by deafault
        this.cost = cost;
@@ -129,4 +128,12 @@ public class Car {
     public Set<CarType> getTypes() { return types; }
 
     public void setTypes(Set<CarType> types) { this.types = types; }
+
+    public Photo getPhoto() { return photo; }
+
+    public void setPhoto(Photo photo) { this.photo = photo; }
+
+    public long getPhotoId() { return photoId; }
+
+    public void setPhotoId(long photoId) { this.photoId = photoId; }
 }
