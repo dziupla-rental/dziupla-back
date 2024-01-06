@@ -14,10 +14,10 @@ public class CompanyInfo {
     private Long id;
 
     @Size(max = 300)
-    String name;
+    private String name;
 
     @Size(min = 10, max = 10)
-    int NIP;
+    private int NIP;
 
     public CompanyInfo() {}
     public CompanyInfo(String name, int NIP) {
