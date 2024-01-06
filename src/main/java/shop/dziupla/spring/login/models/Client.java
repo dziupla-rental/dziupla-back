@@ -22,7 +22,15 @@ public class Client {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_info_id", referencedColumnName = "id")
-    CompanyInfo companyInfo;    // null if client is an individual client, not company
+    private CompanyInfo companyInfo;    // null if client is an individual client, not company
+
+    public Client() {}
+    public Client(String firstName, String lastName, User user, CompanyInfo companyInfo) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.user = user;
+        this.companyInfo = companyInfo;
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
