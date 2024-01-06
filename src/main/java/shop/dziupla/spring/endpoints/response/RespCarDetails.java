@@ -2,7 +2,7 @@ package shop.dziupla.spring.endpoints.response;
 
 import shop.dziupla.spring.endpoints.response.entries.CarListEntry;
 
-public class RespCarDetails extends CarListEntry{
+public class RespCarDetails extends CarListEntry {
     boolean technical_status;
     long insurance_number;
     String license;

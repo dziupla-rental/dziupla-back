@@ -56,16 +56,18 @@ public class CarController {
         return response;
 
     }
+
     @GetMapping("/details")
-    public RespCarDetails detailsAccess(@Valid @RequestBody ReqID request){
+    public RespCarDetails detailsAccess(@Valid @RequestBody ReqID request) {
         request.getId();
-        RespCarDetails response=  new RespCarDetails();
+        RespCarDetails response = new RespCarDetails();
         return response;
     }
+
     @GetMapping("/modify")
     public RespBasic modifyAccess(@Valid @RequestBody ReqCarModify request) {
         RespBasic response = new RespBasic("OK", "");
-        switch (request.getAction()){
+        switch (request.getAction()) {
             case "add": // TODO dodawanie nowego pojazdu
                 break;
             case "remove": // TODO usuwanie pojazdu

@@ -15,7 +15,7 @@ public class ClientController {
     // TODO uprawnienia dla ról
     // TODO integracja z modelem danych
     @GetMapping("/details")
-    public RespClientDetails getDetails(){
+    public RespClientDetails getDetails() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         RespClientDetails response = new RespClientDetails();
         String username = auth.getName();
@@ -26,10 +26,10 @@ public class ClientController {
     }
 
     @GetMapping("/modify")
-    public RespBasic modifyClient(@Valid @RequestBody ReqClientModify request){
+    public RespBasic modifyClient(@Valid @RequestBody ReqClientModify request) {
 
         RespBasic response = new RespBasic("OK", "");
-        switch (request.getAction()){
+        switch (request.getAction()) {
             case "add": // TODO dodawanie nowego pracownika
                 break;
             case "remove": // TODO usuwanie pracownika
