@@ -27,4 +27,28 @@ public class DriverLicenseInfo {
 
     private Long licenseNumber;
     private Date expirationDate;
+
+    public DriverLicenseInfo() {}
+
+    public DriverLicenseInfo(Client client, List<EDriverLicenseCategory> licenseCategories, Long licenseNumber, Date expirationDate) {
+        this.client = client;
+        this.licenseCategories = licenseCategories;
+        this.licenseNumber = licenseNumber;
+        this.expirationDate = expirationDate;
+    }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public Client getClient() { return client; }
+    public void setClient(Client client) { this.client = client; }
+
+    public List<EDriverLicenseCategory> getLicenseCategories() { return licenseCategories; }
+    public void setLicenseCategories(List<EDriverLicenseCategory> licenseCategories) { this.licenseCategories = licenseCategories; }
+
+    public Long getLicenseNumber() { return licenseNumber; }
+    public void setLicenseNumber(Long licenseNumber) { this.licenseNumber = licenseNumber; }
+
+    public Date getExpirationDate() { return expirationDate; }
+    public void setExpirationDate(Date expirationDate) { this.expirationDate = expirationDate; }
 }
