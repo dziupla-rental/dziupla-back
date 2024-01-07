@@ -1,0 +1,17 @@
+name: Build the maven project
+
+on:
+  push:
+    branches: [ "main", "production" ]
+  pull_request:
+    branches: [ "main", "production" ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build -t luck9r/dziupla-back:latest .
