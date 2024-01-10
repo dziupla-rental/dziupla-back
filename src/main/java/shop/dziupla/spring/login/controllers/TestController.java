@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     @GetMapping("/all")
     public String allAccess() {
+
         return "Public Content.";
     }
 

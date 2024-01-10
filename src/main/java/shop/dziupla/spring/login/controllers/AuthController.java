@@ -27,7 +27,7 @@ import shop.dziupla.spring.login.models.Role;
 import shop.dziupla.spring.login.models.User;
 import shop.dziupla.spring.login.payload.request.LoginRequest;
 import shop.dziupla.spring.login.payload.request.SignupRequest;
-import shop.dziupla.spring.login.payload.response.UserInfoResponse;
+import shop.dziupla.spring.login.payload.response.UserDTO;
 import shop.dziupla.spring.login.payload.response.MessageResponse;
 import shop.dziupla.spring.login.repository.RoleRepository;
 import shop.dziupla.spring.login.repository.UserRepository;
@@ -72,7 +72,7 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(new UserInfoResponse(userDetails.getId(),
+                .body(new UserDTO(userDetails.getId(),
                         userDetails.getUsername(),
                         userDetails.getEmail(),
                         roles));
