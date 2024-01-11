@@ -15,9 +15,6 @@ public class Photo {
     @Size(max = 20)
     private String url;
 
-    @NotBlank
-    @Size(max = 20)
-
 
     public Photo() {
 

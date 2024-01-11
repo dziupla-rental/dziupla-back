@@ -26,7 +26,7 @@ public class Car {
     @NotBlank
     private boolean available;
 
-    @NotBlank
+
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private EDriverLicenseCategory licenceCategory;
@@ -47,12 +47,12 @@ public class Car {
     @NotBlank
     private boolean technicalStatus;
 
-    @NotBlank
+
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private ECarType carType;
 
-    @NotBlank
+
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private EFuelType fuelType;
