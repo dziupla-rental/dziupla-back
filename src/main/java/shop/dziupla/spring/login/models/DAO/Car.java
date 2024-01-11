@@ -29,21 +29,20 @@ public class Car {
     @NotBlank
     private boolean available;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "car_licences",
-            joinColumns = @JoinColumn(name = "car_id"),
-            inverseJoinColumns = @JoinColumn(name = "license_id"))
-    private Set<DriverLicenseCategory> licences = new HashSet<>();
 
-    @NotBlank
-    private long licenseId;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private EDriverLicenseCategory licenceCategory;
 
     @NotBlank
     @Size(max = 120)
     private String model;
 
-    @NotBlank
-    private long officeId;
+
+    @ManyToOne
+    @JoinColumn(name = "office_id")
+    private Office office;
+
 
     @NotBlank
     private int seatNumber;
@@ -51,29 +50,29 @@ public class Car {
     @NotBlank
     private boolean technicalStatus;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "types_of_cars",
-            joinColumns = @JoinColumn(name = "car_id"),
-            inverseJoinColumns = @JoinColumn(name = "car_type_id"))
-    private Set<CarType> types = new HashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ECarType carType;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private EFuelType fuelType;
+
     public Car() {
     }
-    @NotBlank
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @ManyToOne
+    @JoinColumn(name = "photo_id")
     private Photo photo;
 
-    @NotBlank
-    private long photoId;
 
-    public Car(float cost, float deposit, int insuranceNumber, long licenseId, String model, long officeId, int seatNumber) {//new cars technicalStatus true by default and is available by deafault
+    public Car(float cost, float deposit, int insuranceNumber,  String model, int seatNumber) {//new cars technicalStatus true by default and is available by deafault
        this.cost = cost;
        this.deposit = deposit;
        this.insuranceNumber = insuranceNumber;
        this.available = true;
-       this.licenseId = licenseId;
        this.model = model;
-       this.officeId = officeId;
        this.seatNumber = seatNumber;
        this.technicalStatus = true;
     }
@@ -102,23 +101,19 @@ public class Car {
 
     public void setAvailable(boolean available) { this.available = available; }
 
-    public Set<DriverLicenseCategory> getLicences() { return licences; }
+    public EDriverLicenseCategory getLicence() { return licenceCategory; }
 
-    public void setLicences(Set<DriverLicenseCategory> licences) {
-        this.licences = licences;
+    public void setLicence(EDriverLicenseCategory licenceCategory) {
+        this.licenceCategory = licenceCategory;
     }
-
-    public long getLicenseId() { return  licenseId; }
-
-    public void setLicenseId(long licenseId) { this.licenseId = licenseId; }
 
     public String getModel() { return model; }
 
     public void setModel(String model) { this.model = model; }
 
-    public long getOfficeId() { return officeId; }
+    public Office getOfficeId() { return office; }
 
-    public void setOfficeId(long officeId) { this.officeId = officeId; }
+    public void setOfficeId(Office office) { this.office = office; }
 
     public int getSeatNumber() { return seatNumber; }
 
@@ -128,15 +123,16 @@ public class Car {
 
     public void setTechnicalStatus(boolean technicalStatus) { this.technicalStatus = technicalStatus; }
 
-    public Set<CarType> getTypes() { return types; }
+    public ECarType getType() { return carType; }
 
-    public void setTypes(Set<CarType> types) { this.types = types; }
+    public void setType(ECarType type) { this.carType = carType; }
+
+    public EFuelType getFuelType() { return fuelType; }
+
+    public void setFuelType(EFuelType fuelType) { this.fuelType = fuelType; }
 
     public Photo getPhoto() { return photo; }
 
     public void setPhoto(Photo photo) { this.photo = photo; }
 
-    public long getPhotoId() { return photoId; }
-
-    public void setPhotoId(long photoId) { this.photoId = photoId; }
 }
