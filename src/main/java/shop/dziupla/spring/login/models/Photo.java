@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "photo")
+@Table(name = "photos")
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +17,6 @@ public class Photo {
 
     @NotBlank
     @Size(max = 20)
-    @OneToOne(mappedBy = "photo")
-    private Car car;
 
 
     public Photo() {
