@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import shop.dziupla.spring.login.models.ERole;
-import shop.dziupla.spring.login.models.Role;
-import shop.dziupla.spring.login.models.User;
+import shop.dziupla.spring.login.models.Enums.ERole;
+import shop.dziupla.spring.login.models.DAO.Role;
+import shop.dziupla.spring.login.models.DAO.User;
 import shop.dziupla.spring.login.payload.request.LoginRequest;
 import shop.dziupla.spring.login.payload.request.SignupRequest;
 import shop.dziupla.spring.login.payload.response.UserDTO;

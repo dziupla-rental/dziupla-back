@@ -8,7 +8,7 @@ The login will be implemented according to the instructions:
 - [Fullstack](https://www.bezkoder.com/angular-17-spring-boot-jwt-auth/)
 ### Employees
 ###### Package into JSON
-``
+`get api/employee`
 - A list of all Employees and their respective IDs
 - Office list
 - Positions list
@@ -37,6 +37,8 @@ The login will be implemented according to the instructions:
 
 ### Employee
 ###### Package into JSON
+`get api/employee/id`
+
 For a provided Employee ID:
 ```json
 {
@@ -45,25 +47,46 @@ For a provided Employee ID:
 	"position": "Mechanik",
 	"id": 12,
 	"salary": 12.3,
-	"shift_start": 800,
-	"shift_end": 2000,
+	"shift_start": 80000,
+	"shift_end": 200000,
 	"office": "Gliwice"
 }
 ```
+### DeleteEmployee
+`delete api/employee/id`
+
+### AddEmployee
+`post api/employee`
+
+all employee parameters must be sent in json (only id should be empty)
+
+json with added employee (also with id) is returned in response
+
 ### ModifyEmployee
-##### Accepts Request Parameters to add, modify or remove Employee data
+`put api/employee`
+
+employee sent in json must have id param, other params can be empty
+
+modified employee is sent in response
+
 Example request parameters:
-```yaml
-first_name: "Steve"
-last_name: "Gomez"
-position: "Menedżer" # Zmienione dane
-id: 12
-salary: 12.3
-shift_start: 900 # Zmienione dane
-shift_end: 2000
-office: "Gliwice"
-action: "add" # Can be either add, remove or modify. If remove, no other parameters than the ID are necessary.
+```json
+{
+  "position": "Menedżer",
+  "id": 12,
+  "shift_start": 90000
+}
 ```
+
+
+
+
+
+
+
+
+
+
 ###### Package into JSON
 Response would be:
 ```json

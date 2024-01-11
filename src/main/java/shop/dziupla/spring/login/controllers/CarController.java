@@ -1,19 +1,7 @@
 package shop.dziupla.spring.login.controllers;
 
-import jakarta.validation.Valid;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import shop.dziupla.spring.endpoints.request.ReqCarList;
-import shop.dziupla.spring.endpoints.request.ReqCarModify;
-import shop.dziupla.spring.endpoints.request.ReqID;
-import shop.dziupla.spring.endpoints.response.RespBasic;
-import shop.dziupla.spring.endpoints.response.RespCarDetails;
-import shop.dziupla.spring.endpoints.response.RespCarList;
-import shop.dziupla.spring.endpoints.response.RespEmployeeList;
-import shop.dziupla.spring.endpoints.response.entries.CarListEntry;
-import shop.dziupla.spring.endpoints.response.entries.EmployeeListEntry;
 import shop.dziupla.spring.login.payload.response.CarDTO;
-import shop.dziupla.spring.login.models.ERole;
 
 import java.util.List;
 
@@ -30,7 +18,7 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    public CarDTO getCarById(@PathVariable Long id) {
+    public CarDTO getCarById(@PathVariable("id") Long id) {
         return null;
     }
 
@@ -45,7 +33,7 @@ public class CarController {
 
     @DeleteMapping("/{id}")
     //@PreAuthorize("hasRole(" + ERole(0) + ")")
-    public void deleteCarById(@PathVariable Long id) {
+    public void deleteCarById(@PathVariable("id") Long id) {
 
     }
 

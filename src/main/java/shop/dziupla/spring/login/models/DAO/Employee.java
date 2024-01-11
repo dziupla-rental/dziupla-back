@@ -1,13 +1,8 @@
-package shop.dziupla.spring.login.models;
+package shop.dziupla.spring.login.models.DAO;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import shop.dziupla.spring.login.models.Role;
 
-import java.sql.Time;
 import java.time.LocalTime;
 
 @Entity
@@ -20,9 +15,9 @@ public class Employee {
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "office_id", referencedColumnName = "id")
     private Office office;
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role role;
+//    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "role_id", referencedColumnName = "id")
+//    private Role role;
 
     @NotNull
     private double salary;
@@ -36,12 +31,12 @@ public class Employee {
     private User user;
 
     public Employee(){}
-    public Employee(Office office, Role role, double salary, LocalTime shiftStart, LocalTime shiftEnd){
+    public Employee(Office office, double salary, LocalTime shiftStart, LocalTime shiftEnd, User user){
             this.office = office;
-            this.role = role;
             this.salary = salary;
             this.shiftStart = shiftStart;
             this.shiftEnd = shiftEnd;
+            this.user = user;
     }
     public Long getId() {   return id;  }
     public void setId(Long id){ this.id = id;   }
@@ -49,8 +44,8 @@ public class Employee {
     public Office getOffice() {return office;}
     public void setOffice(Office office) {this.office = office;}
 
-    public Role getRole() {return role;}
-    public void setRole(Role role) {this.role = role;}
+//    public Role getRole() {return role;}
+//    public void setRole(Role role) {this.role = role;}
 
     public double getSalary() {return salary;}
     public void setSalary(double salary) {this.salary = salary;}

@@ -1,4 +1,4 @@
-package shop.dziupla.spring.login.models;
+package shop.dziupla.spring.login.models.DAO;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

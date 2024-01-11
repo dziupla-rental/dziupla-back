@@ -1,4 +1,4 @@
-package shop.dziupla.spring.login.models;
+package shop.dziupla.spring.login.models.DAO;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,6 +6,9 @@ import java.util.Set;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import shop.dziupla.spring.login.models.CarType;
+import shop.dziupla.spring.login.models.DriverLicenseCategory;
+import shop.dziupla.spring.login.models.Photo;
 
 @Entity
 @Table(name = "cars")

@@ -1,6 +1,7 @@
 package shop.dziupla.spring.login.models;
 
 import jakarta.persistence.*;
+import shop.dziupla.spring.login.models.Enums.EDriverLicenseCategory;
 
 @Entity
 @Table(name = "driverLicenseCategory")

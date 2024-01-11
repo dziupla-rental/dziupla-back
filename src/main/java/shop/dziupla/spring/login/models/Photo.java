@@ -3,6 +3,7 @@ package shop.dziupla.spring.login.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import shop.dziupla.spring.login.models.DAO.Car;
 
 @Entity
 @Table(name = "photo")
