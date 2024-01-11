@@ -47,7 +47,7 @@ For a provided Employee ID:
 	"position": "Mechanik",
 	"id": 12,
 	"salary": 12.3,
-	"shift_start": 80000,
+	"shift_start": "08:00:00",
 	"shift_end": 200000,
 	"office": "Gliwice"
 }

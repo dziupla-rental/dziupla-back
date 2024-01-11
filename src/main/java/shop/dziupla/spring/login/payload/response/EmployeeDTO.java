@@ -1,5 +1,7 @@
 package shop.dziupla.spring.login.payload.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import shop.dziupla.spring.login.models.DAO.Employee;
 import shop.dziupla.spring.login.models.DAO.Office;
 import shop.dziupla.spring.login.models.DAO.User;
@@ -18,15 +20,20 @@ public class EmployeeDTO {
 
     private LocalTime shiftEnd;
 
+    @JsonIgnore
     private User user;
 
+    private String email;
+
     public EmployeeDTO(){}
-    public EmployeeDTO(Office office, double salary, LocalTime shiftStart, LocalTime shiftEnd){
+    public EmployeeDTO(Long id, Office office, double salary, LocalTime shiftStart, LocalTime shiftEnd, User user){
+        this.id = id;
         this.office = office;
-        //this.role = role;
         this.salary = salary;
         this.shiftStart = shiftStart;
         this.shiftEnd = shiftEnd;
+        this.user = user;
+        this.email = user.getEmail();
     }
     public Long getId() {   return id;  }
     public void setId(Long id){ this.id = id;   }
@@ -43,10 +50,18 @@ public class EmployeeDTO {
     public LocalTime getShiftEnd() {return shiftEnd;}
     public void setShiftEnd(LocalTime shiftEnd) {this.shiftEnd = shiftEnd;}
 
-    public User getUser() {return user;}
-    public void setUser(User user) {this.user = user;}
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-    public Employee toEmploee(){
-        return new Employee(this.office, this.salary, this.shiftStart, this.shiftEnd, this.user);
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

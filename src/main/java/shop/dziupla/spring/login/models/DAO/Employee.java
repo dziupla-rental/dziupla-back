@@ -1,9 +1,11 @@
 package shop.dziupla.spring.login.models.DAO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "employees")
@@ -44,13 +46,13 @@ public class Employee {
     public Office getOffice() {return office;}
     public void setOffice(Office office) {this.office = office;}
 
-//    public Role getRole() {return role;}
-//    public void setRole(Role role) {this.role = role;}
 
     public double getSalary() {return salary;}
     public void setSalary(double salary) {this.salary = salary;}
 
-    public LocalTime getShiftStart() {return shiftStart;}
+    public LocalTime getShiftStart() {
+        return shiftStart;
+    }
     public void setShiftStart(LocalTime shiftStart) {this.shiftStart = shiftStart;}
 
     public LocalTime getShiftEnd() {return shiftEnd;}

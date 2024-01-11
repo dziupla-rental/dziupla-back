@@ -1,5 +1,6 @@
 package shop.dziupla.spring.login.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,7 +15,8 @@ import java.util.List;
 @RequestMapping("/api/employee")
 public class EmployeeController {
     // TODO autoryzacja tylko dla wybranych ról
-    EmployeeService service = EmployeeService.getInstance();
+    @Autowired
+    EmployeeService service;
     @GetMapping("")
     //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {

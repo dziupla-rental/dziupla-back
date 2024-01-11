@@ -2,6 +2,7 @@ package shop.dziupla.spring.login.security.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import shop.dziupla.spring.login.models.DAO.Employee;
 import shop.dziupla.spring.login.payload.response.EmployeeDTO;
 import shop.dziupla.spring.login.repository.EmployeeRepository;
@@ -9,23 +10,17 @@ import shop.dziupla.spring.login.repository.EmployeeRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class EmployeeService {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private EmployeeRepository repository;
-    private static EmployeeService service;
-    private EmployeeService(){}
-    public static EmployeeService getInstance(){
-        if(service == null){
-            service = new EmployeeService();
-        }
-        return service;
-    }
+    public EmployeeService(){}
 
     public  EmployeeDTO toDTO(Employee employee){
 
-        return new EmployeeDTO(employee.getOffice(), employee.getSalary(), employee.getShiftStart(), employee.getShiftEnd());
+        return new EmployeeDTO(employee.getId(), employee.getOffice(), employee.getSalary(),
+                employee.getShiftStart(), employee.getShiftEnd(), employee.getUser());
     }
     public  Employee toDAO(EmployeeDTO employee){
 
@@ -53,5 +48,9 @@ public class EmployeeService {
         if(employee.getId() != null){return null;}
         var result = repository.save(toDAO(employee));
         return toDTO(result);
+    }
+
+    public void deleteEmployee(Long id){
+
     }
 }

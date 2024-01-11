@@ -1,14 +1,12 @@
 package shop.dziupla.spring.login.models.DAO;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import shop.dziupla.spring.login.models.CarType;
-import shop.dziupla.spring.login.models.DriverLicenseCategory;
-import shop.dziupla.spring.login.models.Photo;
+
+import shop.dziupla.spring.login.models.Enums.ECarType;
+import shop.dziupla.spring.login.models.Enums.EDriverLicenseCategory;
+import shop.dziupla.spring.login.models.Enums.EFuelType;
 
 @Entity
 @Table(name = "cars")
