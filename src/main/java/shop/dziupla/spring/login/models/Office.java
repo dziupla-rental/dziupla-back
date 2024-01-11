@@ -4,35 +4,24 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name = "photos")
-public class Photo {
+@Table(name = "offices")
+public class Office {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @NotBlank
-    @Size(max = 20)
-    private String url;
-
-
-    public Photo() {
-
-    }
-
-    public Integer getId() {
-        return id;
-    }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getUrl() {
-        return url;
+    public Integer getId() {
+        return id;
     }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
+    //@NotBlank
+    //@OneToMany
+    //private Set<Car> cars = new HashSet<>();
 }
