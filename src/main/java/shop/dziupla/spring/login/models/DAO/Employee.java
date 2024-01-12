@@ -1,11 +1,8 @@
 package shop.dziupla.spring.login.models.DAO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "employees")
@@ -14,14 +11,11 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "office_id", referencedColumnName = "id")
     private Office office;
-//    @ManyToOne(optional = false, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "role_id", referencedColumnName = "id")
-//    private Role role;
 
-    @NotNull
+
     private double salary;
 
     private LocalTime shiftStart;

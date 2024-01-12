@@ -1,8 +1,6 @@
 package shop.dziupla.spring.login.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import shop.dziupla.spring.login.models.DAO.Employee;
 import shop.dziupla.spring.login.models.DAO.Office;
 import shop.dziupla.spring.login.models.DAO.User;
 
@@ -11,7 +9,6 @@ import java.time.LocalTime;
 public class EmployeeDTO {
 
     private Long id;
-
     private Office office;
 
     private double salary;

@@ -1,9 +1,9 @@
 package shop.dziupla.spring.login.controllers;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import shop.dziupla.spring.login.payload.response.EmployeeDTO;
 import shop.dziupla.spring.login.security.services.EmployeeService;
@@ -49,7 +49,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employee){
         try{
             var result = service.addEmployee(employee);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
         }
         catch(IllegalArgumentException ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -57,13 +57,24 @@ public class EmployeeController {
     }
     @DeleteMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public void deleteEmployeeById (@PathVariable("id") Long id){
-
+    public ResponseEntity<HttpStatus> deleteEmployeeById (@PathVariable("id") Long id){
+            try{
+                service.deleteEmployee(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            catch(NullPointerException ex){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            catch (EntityNotFoundException ex){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
     }
     @PutMapping("")
     //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employee){
-            return null;
+            var result = service.updateEmployee(employee);
+            if(result == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }

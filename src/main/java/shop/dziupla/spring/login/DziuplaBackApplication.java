@@ -4,17 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import shop.dziupla.spring.login.models.DAO.Employee;
-import shop.dziupla.spring.login.models.DAO.Office;
-import shop.dziupla.spring.login.models.DAO.Role;
-import shop.dziupla.spring.login.models.DAO.User;
-import shop.dziupla.spring.login.models.Enums.ERole;
 import shop.dziupla.spring.login.repository.EmployeeRepository;
 import shop.dziupla.spring.login.repository.OfficeRepository;
-
-import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
+import shop.dziupla.spring.login.repository.RoleRepository;
+import shop.dziupla.spring.login.security.services.EmployeeService;
 
 @SpringBootApplication
 public class DziuplaBackApplication  implements CommandLineRunner {
@@ -22,6 +15,9 @@ public class DziuplaBackApplication  implements CommandLineRunner {
 	@Autowired EmployeeRepository er;
 	@Autowired
 	OfficeRepository or;
+	@Autowired EmployeeService service;
+	@Autowired
+	RoleRepository rr;
 	public static void main(String[] args) {
 		SpringApplication.run(DziuplaBackApplication.class, args);
 
@@ -37,6 +33,13 @@ public class DziuplaBackApplication  implements CommandLineRunner {
 //		user.setRoles(roleSet);
 //		var employee = new Employee(office, 1000, LocalTime.of(8,0), LocalTime.of(16,0), user);
 //		er.save(employee);
-		//or.save(office);
+//		rr.save(new Role(ERole.ROLE_EMPLOYEE));
+//		rr.save(new Role(ERole.ROLE_USER));
+//		rr.save(new Role(ERole.ROLE_ADMIN));
+//		rr.save(new Role(ERole.ROLE_EMPLOYEE_HR));
+//		rr.save(new Role(ERole.ROLE_EMPLOYEE_MECHANIC));
+
+
+
 	}
 }

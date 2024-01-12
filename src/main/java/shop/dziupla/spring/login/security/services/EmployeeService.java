@@ -3,6 +3,7 @@ package shop.dziupla.spring.login.security.services;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import shop.dziupla.spring.login.mappers.EmployeeMapper;
 import shop.dziupla.spring.login.models.DAO.Employee;
 import shop.dziupla.spring.login.payload.response.EmployeeDTO;
 import shop.dziupla.spring.login.repository.EmployeeRepository;
@@ -15,6 +16,9 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeRepository repository;
+
+    @Autowired
+    private EmployeeMapper mapper;
     public EmployeeService(){}
 
     public  EmployeeDTO toDTO(Employee employee){
@@ -51,6 +55,26 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Long id){
+        try {
+            if(!repository.existsById(id)) throw new EntityNotFoundException();
+            repository.deleteById(id);
+        }
+        catch(IllegalArgumentException ex){
+            throw new NullPointerException();
+        }
 
+    }
+
+    public EmployeeDTO updateEmployee(EmployeeDTO employee){
+        if(employee.getId() == null) return addEmployee(employee);
+        try{
+            Employee employeeDAO = repository.getReferenceById(employee.getId());
+            mapper.updateCustomerFromDto(employee, employeeDAO);
+            repository.save(employeeDAO);
+            return toDTO(employeeDAO);
+        }
+        catch(EntityNotFoundException ex){
+            return null;
+        }
     }
 }

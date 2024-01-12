@@ -1,12 +1,6 @@
 package shop.dziupla.spring.login.controllers;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -16,23 +10,25 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import shop.dziupla.spring.login.models.Enums.ERole;
+import org.springframework.web.bind.annotation.*;
 import shop.dziupla.spring.login.models.DAO.Role;
 import shop.dziupla.spring.login.models.DAO.User;
+import shop.dziupla.spring.login.models.Enums.ERole;
 import shop.dziupla.spring.login.payload.request.LoginRequest;
 import shop.dziupla.spring.login.payload.request.SignupRequest;
-import shop.dziupla.spring.login.payload.response.UserDTO;
+import shop.dziupla.spring.login.payload.response.EmployeeDTO;
 import shop.dziupla.spring.login.payload.response.MessageResponse;
+import shop.dziupla.spring.login.payload.response.UserDTO;
 import shop.dziupla.spring.login.repository.RoleRepository;
 import shop.dziupla.spring.login.repository.UserRepository;
 import shop.dziupla.spring.login.security.jwt.JwtUtils;
+import shop.dziupla.spring.login.security.services.EmployeeService;
 import shop.dziupla.spring.login.security.services.UserDetailsImpl;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 //for Angular Client (withCredentials)
 //@CrossOrigin(origins = "http://localhost:8081", maxAge = 3600, allowCredentials="true")
@@ -51,6 +47,9 @@ public class AuthController {
 
     @Autowired
     PasswordEncoder encoder;
+
+    @Autowired
+    EmployeeService employeeService;
 
     @Autowired
     JwtUtils jwtUtils;
@@ -93,39 +92,62 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
+        Set<Role> roles = new HashSet<>();
+        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(userRole);
+        user.setRoles(roles);
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+    @PostMapping("/signup/employee")
+    public ResponseEntity<?> registerEmployee(@Valid @RequestBody SignupRequest signUpRequest) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+        }
+
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+        // Create new user's account
+        User user = new User(signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword()));
+
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
+        Role empRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
+            roles.add(empRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                    case "empMech":
+                        Role mechRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE_MECHANIC)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
+                        roles.add(mechRole);
 
                         break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                    case "empHR":
+                        Role empHRRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE_HR)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
+                        roles.add(empHRRole);
 
                         break;
                     default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
+                        roles.add(empRole);
                 }
             });
         }
-
         user.setRoles(roles);
         userRepository.save(user);
 
+        EmployeeDTO employee = new EmployeeDTO();
+        employee.setUser(user);
+        employeeService.addEmployee(employee);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
