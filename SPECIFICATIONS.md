@@ -9,13 +9,21 @@ The login will be implemented according to the instructions:
 
 ### Roles
 public enum ERole {
+
     ROLE_USER, (user)
+    
     ROLE_MODERATOR,
+    
     ROLE_ADMIN, (admin)
+    
     ROLE_EMPLOYEE, (emp)
+    
     ROLE_EMPLOYEE_HR, (empHR)
+    
     ROLE_EMPLOYEE_MECHANIC (empMech)
+    
 }
+
 if you want to create new user provide names in brackets (in JSON)
 
 ### Employees
