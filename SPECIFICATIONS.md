@@ -35,7 +35,7 @@ if you want to create new user provide names in brackets (in JSON)
 [
     {
         "id": 1,
-        "office": null,
+        "office": null, //tu trzeba poprawić
         "salary": 1000.0,
         "shiftStart": "08:00:00",
         "shiftEnd": "16:00:00",
