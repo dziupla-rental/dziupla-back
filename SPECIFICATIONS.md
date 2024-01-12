@@ -6,32 +6,34 @@ The login will be implemented according to the instructions:
 - [Backend](https://www.bezkoder.com/spring-boot-login-example-mysql/)
 - [Frontend](https://www.bezkoder.com/angular-17-jwt-auth/)
 - [Fullstack](https://www.bezkoder.com/angular-17-spring-boot-jwt-auth/)
+
+###Roles
+public enum ERole {
+    ROLE_USER, (user)
+    ROLE_MODERATOR,
+    ROLE_ADMIN, (admin)
+    ROLE_EMPLOYEE, (emp)
+    ROLE_EMPLOYEE_HR, (empHR)
+    ROLE_EMPLOYEE_MECHANIC (empMech)
+}
+if you want to create new user provide names in brackets (in JSON)
+
 ### Employees
 ###### Package into JSON
 `get api/employee`
 - A list of all Employees and their respective IDs
-- Office list
-- Positions list
 ```json
 {
-	"employees": [ 
-		{
-			"name": "Jan Nowak",
-			"id": 23
-		},
-		{
-			"name": "Michał Kowalski",
-			"id": 27
-		}
-	],
-	"offices": [ // Lista dostępnych biur
-	"Gliwice",
-	"Zabrze"
-	],
-	"positions": [ // Lista dostępncyh stanowisk
-	"Mechanik",
-	"Menedżer"
-	]
+[
+    {
+        "id": 1,
+        "office": null,
+        "salary": 1000.0,
+        "shiftStart": "08:00:00",
+        "shiftEnd": "16:00:00",
+        "email": "domi10@gmail.com"
+    }
+]
 }
 ```
 
@@ -42,25 +44,23 @@ The login will be implemented according to the instructions:
 For a provided Employee ID:
 ```json
 {
-	"first_name": "Steve",
-	"last_name": "Gomez",
-	"position": "Mechanik",
-	"id": 12,
-	"salary": 12.3,
-	"shift_start": "08:00:00",
-	"shift_end": 200000,
-	"office": "Gliwice"
+    "id": 1,
+    "office": null,
+    "salary": 1000.0,
+    "shiftStart": "08:00:00",
+    "shiftEnd": "16:00:00",
+    "email": "domi10@gmail.com"
 }
 ```
 ### DeleteEmployee
 `delete api/employee/id`
 
+returns http status ok if employee was succesfully deleted
+
 ### AddEmployee
 `post api/employee`
 
-all employee parameters must be sent in json (only id should be empty)
-
-json with added employee (also with id) is returned in response
+json with added employee (with id) is returned in response
 
 ### ModifyEmployee
 `put api/employee`
@@ -72,34 +72,23 @@ modified employee is sent in response
 Example request parameters:
 ```json
 {
-  "position": "Menedżer",
-  "id": 12,
-  "shift_start": 90000
+    "id": 1,
+    "office_id": 2,
+    "salary": 1000.0,
+    "shiftStart": "08:00:00",
+    "shiftEnd": "16:00:00"
 }
 ```
-
-
-
-
-
-
-
-
-
-
 ###### Package into JSON
 Response would be:
 ```json
 {
-	"status": "OK",
-	"error": ""
-}
-```
-Or:
-```json
-{
-	"status": "Error!",
-	"error": "java.lang.NullPointerException" // Either the exception name or the error message
+    "id": 1,
+    "office": null, //tu trzeba poprawić
+    "salary": 1000.0,
+    "shiftStart": "08:00:00",
+    "shiftEnd": "16:00:00",
+    "email": "domi10@gmail.com"
 }
 ```
 
