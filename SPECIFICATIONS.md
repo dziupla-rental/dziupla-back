@@ -66,9 +66,18 @@ For a provided Employee ID:
 returns http status ok if employee was succesfully deleted
 
 ### AddEmployee
-`post api/employee`
+`post api/auth/signup/employee`
 
-json with added employee (with id) is returned in response
+```json
+{
+  "username": "Domi4",
+  "email": "domi4@gmail.com",
+  "password": "Domii11i1",
+  "name": "Domi", //optional
+  "lastname": "Domi",	//optional
+  "role": "emp"	//optional default is emp
+}
+```
 
 ### ModifyEmployee
 `put api/employee`
