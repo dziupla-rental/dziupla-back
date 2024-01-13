@@ -25,9 +25,7 @@ import shop.dziupla.spring.login.security.jwt.JwtUtils;
 import shop.dziupla.spring.login.security.services.EmployeeService;
 import shop.dziupla.spring.login.security.services.UserDetailsImpl;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 //for Angular Client (withCredentials)
@@ -74,7 +72,7 @@ public class AuthController {
                 .body(new UserDTO(userDetails.getId(),
                         userDetails.getUsername(),
                         userDetails.getEmail(),
-                        roles));
+                        roles.get(0)));
     }
 
     @PostMapping("/signup")
@@ -90,13 +88,12 @@ public class AuthController {
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+                encoder.encode(signUpRequest.getPassword()), signUpRequest.getName(),
+                signUpRequest.getLastname());
 
-        Set<Role> roles = new HashSet<>();
         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        roles.add(userRole);
-        user.setRoles(roles);
+        user.setRole(userRole);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
@@ -113,36 +110,29 @@ public class AuthController {
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+                encoder.encode(signUpRequest.getPassword()), signUpRequest.getName(),
+                signUpRequest.getLastname());
 
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
+        String strRole = signUpRequest.getRole();
+        Role role;
 
         Role empRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        if (strRoles == null) {
-            roles.add(empRole);
+        if (strRole == null) {
+            role= roleRepository.findByName(ERole.ROLE_EMPLOYEE)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "empMech":
-                        Role mechRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE_MECHANIC)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(mechRole);
+            role = switch (strRole) {
+                case "empMech" -> roleRepository.findByName(ERole.ROLE_EMPLOYEE_MECHANIC)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                case "empHR" -> roleRepository.findByName(ERole.ROLE_EMPLOYEE_HR)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                default -> roleRepository.findByName(ERole.ROLE_EMPLOYEE)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            };
 
-                        break;
-                    case "empHR":
-                        Role empHRRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE_HR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(empHRRole);
-
-                        break;
-                    default:
-                        roles.add(empRole);
-                }
-            });
         }
-        user.setRoles(roles);
+        user.setRole(role);
         userRepository.save(user);
 
         EmployeeDTO employee = new EmployeeDTO();

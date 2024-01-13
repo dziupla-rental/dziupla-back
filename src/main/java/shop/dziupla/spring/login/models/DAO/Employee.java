@@ -15,7 +15,6 @@ public class Employee {
     @JoinColumn(name = "office_id", referencedColumnName = "id")
     private Office office;
 
-
     private double salary;
 
     private LocalTime shiftStart;

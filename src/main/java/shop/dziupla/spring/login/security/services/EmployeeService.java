@@ -66,7 +66,7 @@ public class EmployeeService {
     }
 
     public EmployeeDTO updateEmployee(EmployeeDTO employee){
-        if(employee.getId() == null) return addEmployee(employee);
+        if(employee.getId() == null || employee.getUser() != null) throw new NullPointerException();
         try{
             Employee employeeDAO = repository.getReferenceById(employee.getId());
             mapper.updateCustomerFromDto(employee, employeeDAO);

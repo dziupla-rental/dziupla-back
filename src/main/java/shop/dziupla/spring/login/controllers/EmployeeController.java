@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import shop.dziupla.spring.login.payload.response.EmployeeDTO;
 import shop.dziupla.spring.login.security.services.EmployeeService;
@@ -18,7 +19,7 @@ public class EmployeeController {
     @Autowired
     EmployeeService service;
     @GetMapping("")
-    //@PreAuthorize("hasRole('ADMIN')")
+   //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
         var result = service.getAllEmployees();
         if(result.isEmpty()){
@@ -49,6 +50,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employee){
         try{
             var result = service.addEmployee(employee);
+            if(result == null)return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         }
         catch(IllegalArgumentException ex){
@@ -72,9 +74,13 @@ public class EmployeeController {
     @PutMapping("")
     //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employee){
+        try {
             var result = service.updateEmployee(employee);
-            if(result == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (result == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(NullPointerException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
