@@ -1,11 +1,8 @@
 package shop.dziupla.spring.login.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.beans.factory.annotation.Autowired;
 import shop.dziupla.spring.login.models.DAO.Office;
-import shop.dziupla.spring.login.models.DAO.Role;
 import shop.dziupla.spring.login.models.DAO.User;
-import shop.dziupla.spring.login.repository.UserRepository;
 
 import java.time.LocalTime;
 
@@ -13,8 +10,10 @@ public class EmployeeDTO {
 
     private Long id;
 
+
     private Office office;
 
+    private Long officeId;
     private double salary;
 
     private LocalTime shiftStart;
@@ -68,22 +67,34 @@ public class EmployeeDTO {
     }
 
     public String getEmail() {
-        return email;
+        return user.getEmail();
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getName() {return name;}
+    public String getName() {return user.getName();}
 
     public void setName(String name) {this.name = name;}
 
-    public String getLastName() {return lastName;}
+    public String getLastName() {return user.getLastname();}
 
     public void setLastName(String lastName) {this.lastName = lastName;}
 
-    public String getRole() {return role;}
+    public String getRole() {
+        return user.getRole().getName().name();
+    }
 
-    public void setRole(String role) {this.role = role;}
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setOfficeId(Long officeId) {
+        this.officeId = officeId;
+    }
+
+    public Long getOfficeId() {
+        return officeId;
+    }
 }

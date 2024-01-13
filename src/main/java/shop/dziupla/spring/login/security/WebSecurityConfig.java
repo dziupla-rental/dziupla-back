@@ -1,5 +1,6 @@
 package shop.dziupla.spring.login.security;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -106,5 +107,9 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }

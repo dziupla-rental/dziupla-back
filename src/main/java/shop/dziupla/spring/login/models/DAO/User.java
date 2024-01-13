@@ -1,13 +1,9 @@
 package shop.dziupla.spring.login.models.DAO;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import shop.dziupla.spring.login.models.DAO.Role;
 
 @Entity
 @Table(name = "users",
@@ -39,7 +35,7 @@ public class User {
     @Size(max = 30)
     private String lastname;
 
-    @ManyToOne(optional = false,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id")
     private Role role;
 

@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import shop.dziupla.spring.login.payload.response.EmployeeDTO;
 import shop.dziupla.spring.login.security.services.EmployeeService;
@@ -21,66 +20,53 @@ public class EmployeeController {
     @GetMapping("")
    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-        var result = service.getAllEmployees();
-        if(result.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        else{
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(service.getAllEmployees(), HttpStatus.OK);
     }
     @GetMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EmployeeDTO> getEmployeById(@PathVariable("id") Long id) {
-        try {
+       try {
             var result = service.getEmployeeById(id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+       }
+       catch(NullPointerException ex){
+           return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+       }
+       catch(EntityNotFoundException ex){
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
 
-            if (result != null) {
-                return new ResponseEntity<>(result, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+    }
+
+    @DeleteMapping("/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<HttpStatus> deleteEmployeeById (@PathVariable("id") Long id){
+        try{
+            service.deleteEmployeeById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         catch(NullPointerException ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-    }
-    @PostMapping("")
-    //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employee){
-        try{
-            var result = service.addEmployee(employee);
-            if(result == null)return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        catch(EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        catch(IllegalArgumentException ex){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-    @DeleteMapping("/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<HttpStatus> deleteEmployeeById (@PathVariable("id") Long id){
-            try{
-                service.deleteEmployee(id);
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-            catch(NullPointerException ex){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            catch (EntityNotFoundException ex){
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+
     }
     @PutMapping("")
     //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employee){
-        try {
-            var result = service.updateEmployee(employee);
-            if (result == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }catch(NullPointerException ex){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+       try{
+           var result = service.updateEmployee(employee);
+           return new ResponseEntity<>(result, HttpStatus.OK);
+       }
+       catch(EntityNotFoundException ex){
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+       catch(RuntimeException ex){
+           return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+       }
+
     }
 
 }
