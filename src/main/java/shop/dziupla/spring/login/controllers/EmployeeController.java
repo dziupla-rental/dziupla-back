@@ -1,58 +1,86 @@
 package shop.dziupla.spring.login.controllers;
 
-import jakarta.validation.Valid;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import shop.dziupla.spring.endpoints.request.ReqID;
-import shop.dziupla.spring.endpoints.request.ReqEmployeeModify;
-import shop.dziupla.spring.endpoints.response.RespBasic;
-import shop.dziupla.spring.endpoints.response.entries.EmployeeListEntry;
-import shop.dziupla.spring.endpoints.response.RespEmployeeDetails;
-import shop.dziupla.spring.endpoints.response.RespEmployeeList;
+import shop.dziupla.spring.login.payload.response.EmployeeDTO;
+import shop.dziupla.spring.login.security.services.EmployeeService;
+
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/employee")
 public class EmployeeController {
     // TODO autoryzacja tylko dla wybranych ról
-    // TODO połączenie z rzeczywistym modelem danych
-    @GetMapping("/list")
-    public RespEmployeeList listAccess() {
-        return new RespEmployeeList(
-                new String[]{"Warszawa", "Kraków"},
-                new String[]{"Mechanik"},
-                new EmployeeListEntry[]{
-                        new EmployeeListEntry(1, "Janusz Kowalski"),
-                }
-        );
-    }
-
-    @GetMapping("/details")
-    public RespEmployeeDetails detailsAccess(@Valid @RequestBody ReqID request) {
-        //   request.getId(); // TODO wyszukanie pracownika z id
-        RespEmployeeDetails response = new RespEmployeeDetails();
-        response.setFirst_name("Jan");
-        response.setLast_name("Kowalski");
-        response.setId(request.getId());
-        // itd ...
-        return response;
-    }
-
-    @GetMapping("/modify")
-    public RespBasic detailsAccess(@Valid @RequestBody ReqEmployeeModify request) {
-
-        RespBasic response = new RespBasic("OK", "");
-        // request has the same fields as RespEmoployeeDetails + action
-        switch (request.getAction()) {
-            case "add": // TODO dodawanie nowego pracownika
-                break;
-            case "remove": // TODO usuwanie pracownika
-                break;
-            case "modify": // TODO modyfikowanie pracownika
-                break;
-            default:
-                response.setStatus("Error");
-                response.setError("'%s' is not a valid action for an employee".formatted(request.getAction()));
+    @Autowired
+    EmployeeService service;
+    @GetMapping("")
+   //@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+        var result = service.getAllEmployees();
+        if(result.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return response;
+        else{
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
     }
+    @GetMapping("/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<EmployeeDTO> getEmployeById(@PathVariable("id") Long id) {
+        try {
+            var result = service.getEmployeeById(id);
+
+            if (result != null) {
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+        catch(NullPointerException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employee){
+        try{
+            var result = service.addEmployee(employee);
+            if(result == null)return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        }
+        catch(IllegalArgumentException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @DeleteMapping("/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<HttpStatus> deleteEmployeeById (@PathVariable("id") Long id){
+            try{
+                service.deleteEmployee(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            catch(NullPointerException ex){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            catch (EntityNotFoundException ex){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+    }
+    @PutMapping("")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employee){
+        try {
+            var result = service.updateEmployee(employee);
+            if (result == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(NullPointerException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

@@ -1,11 +1,12 @@
-package shop.dziupla.spring.login.models;
+package shop.dziupla.spring.login.models.DAO;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import shop.dziupla.spring.login.models.DAO.Car;
 
 @Entity
-@Table(name = "photo")
+@Table(name = "photos")
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,11 +15,6 @@ public class Photo {
     @NotBlank
     @Size(max = 20)
     private String url;
-
-    @NotBlank
-    @Size(max = 20)
-    @OneToOne(mappedBy = "photo")
-    private Car car;
 
 
     public Photo() {
