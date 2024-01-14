@@ -1,13 +1,14 @@
 package shop.dziupla.spring.login.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.List;
 
 @Entity
-@Table(name = "driverlicenses", uniqueConstraints = {
+@Table(name = "driver_licenses", uniqueConstraints = {
         @UniqueConstraint(columnNames = "licenseNumber")
 })
 public class DriverLicenseInfo {
@@ -15,10 +16,12 @@ public class DriverLicenseInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @NotNull
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
+    @NotEmpty
     @ElementCollection(targetClass = EDriverLicenseCategory.class)
     @CollectionTable(name = "driver_license_categories", joinColumns = @JoinColumn(name = "driver_license_info_id"))
     @Enumerated(EnumType.STRING)
@@ -26,6 +29,7 @@ public class DriverLicenseInfo {
     private List<EDriverLicenseCategory> licenseCategories;
 
     private Long licenseNumber;
+
     private Date expirationDate;
 
     public DriverLicenseInfo() {}
