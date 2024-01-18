@@ -1,7 +1,8 @@
-package shop.dziupla.spring.login.models;
+package shop.dziupla.spring.login.models.DAO;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import shop.dziupla.spring.login.payload.response.Default;
 
 @Entity
 @Table(name = "company_info",
@@ -16,7 +17,6 @@ public class CompanyInfo {
     @Size(max = 300)
     private String name;
 
-    @Size(min = 10, max = 10)
     private int NIP;
 
     public CompanyInfo() {}
