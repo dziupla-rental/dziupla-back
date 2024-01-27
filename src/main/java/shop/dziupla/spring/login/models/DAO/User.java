@@ -1,7 +1,4 @@
-package shop.dziupla.spring.login.models;
-
-import java.util.HashSet;
-import java.util.Set;
+package shop.dziupla.spring.login.models.DAO;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -32,19 +29,25 @@ public class User {
     @Size(max = 120)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @Size(max = 30)
+    private String name;
+
+    @Size(max = 30)
+    private String lastname;
+
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "id")
+    private Role role;
 
     public User() {
     }
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, String name, String lastname) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.name = name;
+        this.lastname = lastname;
     }
 
     public Long getId() {
@@ -79,11 +82,27 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public String getName() {
+        return name;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
