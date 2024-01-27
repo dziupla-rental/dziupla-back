@@ -64,14 +64,19 @@ public class Car {
     private Photo photo;
 
 
-    public Car(float cost, float deposit, int insuranceNumber,  String model, int seatNumber) {//new cars technicalStatus true by default and is available by deafault
+    public Car(ECarType carType, float cost, float deposit, EFuelType fuelType, int insuranceNumber, EDriverLicenseCategory licenceCategory,  String model, int seatNumber, Office office, Photo photo) {//new cars technicalStatus true by default and is available by deafault
+       this.carType = carType;
        this.cost = cost;
        this.deposit = deposit;
+       this.fuelType = fuelType;
        this.insuranceNumber = insuranceNumber;
+       this.licenceCategory = licenceCategory;
        this.available = true;
        this.model = model;
        this.seatNumber = seatNumber;
        this.technicalStatus = true;
+       this.office = office;
+       this.photo = photo;
     }
 
     public Long getId() {

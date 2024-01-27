@@ -1,83 +1,55 @@
 package shop.dziupla.spring.login.controllers;
 
-import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import shop.dziupla.spring.endpoints.request.ReqCarList;
-import shop.dziupla.spring.endpoints.request.ReqCarModify;
-import shop.dziupla.spring.endpoints.request.ReqID;
-import shop.dziupla.spring.endpoints.response.RespBasic;
-import shop.dziupla.spring.endpoints.response.RespCarDetails;
-import shop.dziupla.spring.endpoints.response.RespCarList;
-import shop.dziupla.spring.endpoints.response.RespEmployeeList;
-import shop.dziupla.spring.endpoints.response.entries.CarListEntry;
-import shop.dziupla.spring.endpoints.response.entries.EmployeeListEntry;
+import shop.dziupla.spring.login.payload.response.CarDTO;
+import shop.dziupla.spring.login.security.services.CarService;
+
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/car")
 public class CarController {
+    @Autowired
+    CarService service;
     // TODO autoryzacja wybranyuch ról
     // TODO podpięcie do modelu danych
-    @GetMapping("/list")
-    public RespCarList listAccess(@Valid @RequestBody ReqCarList request) {
-        RespCarList response = new RespCarList();
-        response.setCar_types(new String[]{"SEDAN", "HATCHBACK"});
-        response.setFuel_types(new String[]{"BENZYNA", "DIESEL"});
-        // TODO wybrać auta spełniające poniższe warunki i wstawić do response
-//        request.getOffice();
-//        request.getAvailable_start();
-//        request.getAvailable_end();
+    @GetMapping("")
+    public ResponseEntity<List<CarDTO>> getAllCars() {
+        return new ResponseEntity<>(service.getAllCars(), HttpStatus.OK);
+    }
 
-        response.setCars(new CarListEntry[]{
-                new CarListEntry(
-                        "Toyota Yaris",
-                        12,
-                        "HATCHBACK",
-                        200,
-                        300,
-                        true,
-                        4,
-                        "DIESEL",
-                        "http...",
-                        "Katowice"),
-                new CarListEntry(
-                        "Polonez",
-                        13,
-                        "SEDAN",
-                        2002,
-                        3300,
-                        false,
-                        100,
-                        "BENZYNA",
-                        "http...",
-                        "Warszawa"),
-        });
+    @GetMapping("/{id}")
+    public ResponseEntity<CarDTO> getCarById(@PathVariable("id") Long id) {
+        return id==null? new ResponseEntity<>(HttpStatus.BAD_REQUEST):service.getCarById(id)==null?new ResponseEntity<>(HttpStatus.NOT_FOUND):new ResponseEntity<>(service.getCarById(id), HttpStatus.OK);
+    }
 
-        return response;
+    @PostMapping("")
+    public CarDTO createCar(@RequestBody CarDTO car) {
+        //service.saveCar();
+        //zmapować na DAO
+        //dodać do bazy przez serwis
+        //serwis dodaje do car ID
+        //return service.insert(car)
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
+    //@PreAuthorize("hasRole(" + ERole(0) + ")")
+    public void deleteCarById(@PathVariable("id") Long id) {
 
     }
 
-    @GetMapping("/details")
-    public RespCarDetails detailsAccess(@Valid @RequestBody ReqID request) {
-        request.getId();
-        RespCarDetails response = new RespCarDetails();
-        return response;
+    @PutMapping("")
+    public CarDTO updateCar(@RequestBody CarDTO car) {
+        //check id car has set is
+        //if no same as post
+        //if yes do update
+        return null;
     }
 
-    @GetMapping("/modify")
-    public RespBasic modifyAccess(@Valid @RequestBody ReqCarModify request) {
-        RespBasic response = new RespBasic("OK", "");
-        switch (request.getAction()) {
-            case "add": // TODO dodawanie nowego pojazdu
-                break;
-            case "remove": // TODO usuwanie pojazdu
-                break;
-            case "modify": // TODO modyfikowanie pojazdu
-                break;
-            default:
-                response.setStatus("Error");
-                response.setError("'%s' is not a valid action for an employee".formatted(request.getAction()));
-        }
-        return response;
-    }
+
 }
