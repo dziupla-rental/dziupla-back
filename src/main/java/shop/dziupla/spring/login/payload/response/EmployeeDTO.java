@@ -20,8 +20,6 @@ public class EmployeeDTO {
 
     private LocalTime shiftEnd;
 
-    @JsonIgnore
-    private User user;
 
     private String email;
 
@@ -30,6 +28,9 @@ public class EmployeeDTO {
     private String lastName;
 
     private String role;
+
+    @JsonIgnore
+    private User user;
 
     public EmployeeDTO(){}
     public EmployeeDTO(Long id, Office office, double salary, LocalTime shiftStart, LocalTime shiftEnd, User user){
@@ -59,31 +60,25 @@ public class EmployeeDTO {
     public LocalTime getShiftEnd() {return shiftEnd;}
     public void setShiftEnd(LocalTime shiftEnd) {this.shiftEnd = shiftEnd;}
 
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public String getEmail() {
-        return user.getEmail();
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getName() {return user.getName();}
+    public String getName() {return name;}
 
     public void setName(String name) {this.name = name;}
 
-    public String getLastName() {return user.getLastname();}
+    public String getLastName() {return lastName;}
 
     public void setLastName(String lastName) {this.lastName = lastName;}
 
     public String getRole() {
-        return user.getRole().getName().name();
+        return role;
     }
 
     public void setRole(String role) {
@@ -97,4 +92,8 @@ public class EmployeeDTO {
     public Long getOfficeId() {
         return officeId;
     }
+
+    public void setUser(User user) {this.user = user;}
+
+    public User getUser() {return user;}
 }

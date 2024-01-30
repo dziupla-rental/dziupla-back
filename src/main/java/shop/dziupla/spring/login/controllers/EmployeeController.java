@@ -63,6 +63,9 @@ public class EmployeeController {
        catch(EntityNotFoundException ex){
            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
        }
+       catch(IllegalArgumentException ex){
+           return new ResponseEntity<>(HttpStatus.CONFLICT);
+       }
        catch(RuntimeException ex){
            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
        }

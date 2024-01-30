@@ -12,7 +12,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(optional = true)
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(unique = false, referencedColumnName = "id")
     private Office office;
 
     private double salary;
@@ -21,7 +21,7 @@ public class Employee {
 
     private LocalTime shiftEnd;
 
-    @OneToOne(optional = false, cascade =  CascadeType.REMOVE, orphanRemoval = true)
+    @OneToOne(optional = false, cascade =  CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

@@ -3,6 +3,7 @@ package shop.dziupla.spring.login.controllers;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -89,7 +90,7 @@ public class AuthController {
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()), signUpRequest.getName(),
-                signUpRequest.getLastname());
+                signUpRequest.getLastName());
 
         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -99,29 +100,21 @@ public class AuthController {
     }
     @PostMapping("/signup/employee")
     public ResponseEntity<?> registerEmployee(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
-        }
-
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+        if (userRepository.existsByUsername(signUpRequest.getUsername()) || userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()), signUpRequest.getName(),
-                signUpRequest.getLastname());
+                signUpRequest.getLastName());
 
         String strRole = signUpRequest.getRole();
-        Role role;
-
-        Role empRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
+        Role role = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        if (strRole == null) {
-            role= roleRepository.findByName(ERole.ROLE_EMPLOYEE)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        } else {
+
+        if (strRole != null) {
             role = switch (strRole) {
                 case "empMech" -> roleRepository.findByName(ERole.ROLE_EMPLOYEE_MECHANIC)
                         .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -130,7 +123,6 @@ public class AuthController {
                 default -> roleRepository.findByName(ERole.ROLE_EMPLOYEE)
                         .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             };
-
         }
         user.setRole(role);
         userRepository.save(user);
@@ -138,7 +130,7 @@ public class AuthController {
         EmployeeDTO employee = new EmployeeDTO();
         employee.setUser(user);
         employeeService.addEmployee(employee);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/signout")
