@@ -1,5 +1,6 @@
 package shop.dziupla.spring.login.security.services;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class OfficeService {
     }
 
     public OfficeDTO createOffice(OfficeDTO office){
+        if(repository.existsByLocation(office.getLocation())) throw new EntityExistsException();
         if(office.getId() != null || office.getLocation() == null)throw new IllegalArgumentException();
         return DAOtoDTO(repository.save(DTOtoDAO(office)));
     }
@@ -50,6 +52,7 @@ public class OfficeService {
 
     public OfficeDTO updateOffice(OfficeDTO office){
         if(office == null)throw new NullPointerException();
+        if(repository.existsByLocation(office.getLocation())) throw new EntityExistsException();
         if(office.getId() == null)throw new IllegalArgumentException();
         if(!repository.existsById(office.getId())) throw new EntityNotFoundException();
         Office officeDAO = repository.getReferenceById(office.getId());

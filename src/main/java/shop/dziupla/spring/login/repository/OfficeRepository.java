@@ -6,4 +6,6 @@ import shop.dziupla.spring.login.models.DAO.Office;
 
 @Repository
 public interface OfficeRepository extends JpaRepository<Office, Long> {
+
+    Boolean existsByLocation(String location);
 }
