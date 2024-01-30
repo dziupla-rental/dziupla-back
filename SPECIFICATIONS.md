@@ -33,14 +33,21 @@ if you want to create new user provide names in brackets (in JSON)
 ```json
 {
 [
-    {
-        "id": 1,
-        "office": null, //tu trzeba poprawić
-        "salary": 1000.0,
-        "shiftStart": "08:00:00",
-        "shiftEnd": "16:00:00",
-        "email": "domi10@gmail.com"
-    }
+   {
+    "id": 4,
+    "office": {
+        "id": 10,
+        "location": "Warszawa"
+    },
+    "officeId": null,
+    "salary": 0.0,
+    "shiftStart": "08:00:00",
+    "shiftEnd": "16:00:00",
+    "email": "dom47@gmail.com",
+    "name": "Domi",
+    "lastName": "wasil",
+    "role": "ROLE_EMPLOYEE_HR"
+}
 ]
 }
 ```
@@ -52,12 +59,21 @@ if you want to create new user provide names in brackets (in JSON)
 For a provided Employee ID:
 ```json
 {
-    "id": 1,
-    "office": null, //tu trzeba poprawić
-    "salary": 1000.0,
+    {
+    "id": 4,
+    "office": {
+        "id": 10,
+        "location": "Warszawa"
+    },
+    "officeId": null,
+    "salary": 0.0,
     "shiftStart": "08:00:00",
     "shiftEnd": "16:00:00",
-    "email": "domi10@gmail.com"
+    "email": "dom47@gmail.com",
+    "name": "Domi",
+    "lastName": "wasil",
+    "role": "ROLE_EMPLOYEE_HR"
+}
 }
 ```
 ### DeleteEmployee
@@ -89,8 +105,8 @@ modified employee is sent in response
 Example request parameters:
 ```json
 {
-    "id": 1,
-    "office_id": 2,
+    "id": 6,
+    "officeId": 2,
     "salary": 1000.0,
     "shiftStart": "08:00:00",
     "shiftEnd": "16:00:00"
@@ -99,22 +115,96 @@ Example request parameters:
 ###### Package into JSON
 Response would be:
 ```json
+
 {
-    "id": 1,
-    "office": null, //tu trzeba poprawić
+    "id": 6,
+    "office": {
+        "id": 2,
+        "location": "Nowy Sacz"
+    },
+    "officeId": null,
     "salary": 1000.0,
     "shiftStart": "08:00:00",
     "shiftEnd": "16:00:00",
-    "email": "domi10@gmail.com"
+    "email": "dom49@gmail.com",
+    "name": "Domi",
+    "lastName": null,
+    "role": "ROLE_EMPLOYEE"
+
+}
+```
+### Offices
+### Get all offices
+###### Package into JSON
+`get api/office`
+- A list of all offices and their respective IDs
+```json
+{
+[
+    {
+        "id": 2,
+        "location": "Nowy Sacz"
+    },
+    {
+        "id": 3,
+        "location": "Gliwice"
+    },
+    {
+        "id": 4,
+        "location": "Warszawa"
+    }
+]
+}
+```
+### Get one office by id
+###### Package into JSON
+`get api/office/id`
+- A office of given id or 404 not found message if office doesn't exist
+```json
+{
+    "id": 2,
+    "location": "Nowy Sacz"
+}
+```
+### create office
+###### Package into JSON
+`post api/office/id`
+- location must not be blank, it isn't possible to create 2 offices of the same location
+```json
+{
+    "location": "Katowice"
+}
+```
+- response would be
+```json
+{
+    "id": 11,
+    "location": "Katowice"
 }
 ```
 
-### Role
+### delete office
 ###### Package into JSON
-For a User ID:
-```json
-{ "role": "" }
+`delete api/office/id`
+- returns status OK if office was successfully deleted
+  
+### update office
+###### Package into JSON
+`put api/office`
+- office sent in json must have id param, you can't change location to a location that already exists
+ ```json
+  {
+    "id": 5,
+    "location": "Gliwice"
+}
 ```
+- in reponse you get udpated office
+ ```json
+  {
+    "id": 5,
+    "location": "Gliwice"
+}
+```  
 
 ### Cars List
 request formatted thusly:
