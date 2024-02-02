@@ -355,21 +355,97 @@ Variables:
 }
 ```
 ## Client
-### Client Details
-For the currently signed in client (owner of the token)
+### Get client details
+Get information about currently signed in Client
+get /client/details
 ```json
 {
-	"first_name": "Jan",
-	"last_name": "Kowalski",
-	"is_company": false,
-	"licenses":[
-		{
-		"number":123453252,
-		"expiration_date": "11-11-2026",
-		"category": "B"
-		}
-	]
+    "id": 2,
+    "username": "goodman",
+    "email": "goodman@gmail.com",
+    "name": "Jimmy",
+    "lastName": "McGill",
+    "companyInfo": null,
+    "licenses": []
 }
+```
+### Get all clients
+get /client
+```json
+[
+    {
+        "id": 1,
+        "username": "kielich420",
+        "email": "kielich@gmail.com",
+        "name": "Mateusz",
+        "lastName": "Kieliszkowski",
+        "companyInfo": {
+            "name": "Budex Sp. z.o.o.",
+            "nip": 123456789
+        },
+        "licenses": [
+            {
+                "id": 1,
+                "licenseCategory": "B",
+                "licenseNumber": 123458,
+                "expirationDate": "2024-12-12"
+            },
+            {
+                "id": 3,
+                "licenseCategory": "A",
+                "licenseNumber": 1312420,
+                "expirationDate": "2030-01-01"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "username": "goodman",
+        "email": "goodman@gmail.com",
+        "name": "Jimmy",
+        "lastName": "McGill",
+        "companyInfo": null,
+        "licenses": []
+    }
+]
+```
+### Get client by id
+get /client/{id}
 
+Response like above
+
+### Delete client by id
+delete /client/{id}
+
+### Modify client
+put /client
+
+#### Request:
+Client's id is required, chooses which client to modify.
+To add new license do not specify its id, to modify existing license it is requierd to specify its id.
+```json
+{
+    "id": 1,	// requierd - chooses client to modify
+    "companyInfo": {
+        "name": "Budex Sp. z.o.o.",
+        "nip": 123456789
+    },
+    "licenses": [
+        {
+            "id": 1,
+            "clientId": 1,
+            "licenseCategory": "B",
+            "licenseNumber": 123458,
+            "expirationDate": "2024-12-12"
+        },
+        {
+            "clientId": 1,
+            "licenseCategory": "A",
+            "licenseNumber": "1312420",
+            "expirationDate": "2030-01-01"
+        }
+    ]
+}
 ```
 
+In response returns modified client (all fields).
