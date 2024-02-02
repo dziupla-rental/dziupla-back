@@ -1,5 +1,6 @@
 package shop.dziupla.spring.login.controllers;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,17 +25,24 @@ public class CarController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CarDTO> getCarById(@PathVariable("id") Long id) {
-        return id==null? new ResponseEntity<>(HttpStatus.BAD_REQUEST):service.getCarById(id)==null?new ResponseEntity<>(HttpStatus.NOT_FOUND):new ResponseEntity<>(service.getCarById(id), HttpStatus.OK);
+        try{
+            return id==null?
+                    new ResponseEntity<>(HttpStatus.BAD_REQUEST):
+                    new ResponseEntity<>(service.getCarById(id), HttpStatus.OK);
+        }
+        catch (EntityNotFoundException enfe){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("")
-    public CarDTO createCar(@RequestBody CarDTO car) {
-        //service.saveCar();
-        //zmapować na DAO
-        //dodać do bazy przez serwis
-        //serwis dodaje do car ID
-        //return service.insert(car)
-        return null;
+    public ResponseEntity<CarDTO> createCar(@RequestBody CarDTO car) {
+        try{
+            return new ResponseEntity<>(service.addCar(car), HttpStatus.OK);
+        }
+        catch (IllegalArgumentException | NullPointerException iae){
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")

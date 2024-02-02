@@ -18,7 +18,6 @@ import java.util.List;
 @Service
 public class EmployeeService {
     @Autowired EmployeeRepository repository;
-    @Autowired ModelMapper mapper;
 
     @Autowired EmployeeMapper empMapper;
     @Autowired OfficeRepository officeRepository;

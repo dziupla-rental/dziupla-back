@@ -2,6 +2,7 @@ package shop.dziupla.spring.login.models.DAO;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import shop.dziupla.spring.login.models.Enums.ECarType;
@@ -15,16 +16,16 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotNull
     private float cost;
 
-    @NotBlank
+    @NotNull
     private float deposit;
 
-    @NotBlank
+    @NotNull
     private int insuranceNumber;
 
-    @NotBlank
+    @NotNull
     private boolean available;
 
 
@@ -42,10 +43,10 @@ public class Car {
     private Office office;
 
 
-    @NotBlank
+    @NotNull
     private int seatNumber;
 
-    @NotBlank
+    @NotNull
     private boolean technicalStatus;
 
 
@@ -114,9 +115,9 @@ public class Car {
 
     public void setModel(String model) { this.model = model; }
 
-    public Office getOfficeId() { return office; }
+    public Office getOffice() { return office; }
 
-    public void setOfficeId(Office office) { this.office = office; }
+    public void setOffice(Office office) { this.office = office; }
 
     public int getSeatNumber() { return seatNumber; }
 

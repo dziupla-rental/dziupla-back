@@ -1,70 +1,48 @@
 package shop.dziupla.spring.login.payload.response;
 
-import shop.dziupla.spring.login.models.*;
+//import shop.dziupla.spring.login.models.*;
+import shop.dziupla.spring.login.models.DAO.Office;
+import shop.dziupla.spring.login.models.DAO.Photo;
+import shop.dziupla.spring.login.models.Enums.ECarType;
+import shop.dziupla.spring.login.models.Enums.EDriverLicenseCategory;
+import shop.dziupla.spring.login.models.Enums.EFuelType;
 
 public class CarDTO {
 
     private Long id;
 
-
     private float cost;
-
 
     private float deposit;
 
-
     private int insuranceNumber;
-
 
     private boolean available;
 
 
-
-    private EDriverLicenseCategory licenceCategory;
-
+    private String licenceCategory;
 
     private String model;
 
 
+    private OfficeDTO office;
 
-    private Office office;
-
-
+    private Long officeId;
 
     private int seatNumber;
-
 
     private boolean technicalStatus;
 
 
-
-    private ECarType carType;
-
+    private String carType;
 
 
-    private EFuelType fuelType;
+    private String fuelType;
 
     public CarDTO() {
     }
 
-    private Photo photo;
-
-
-    public CarDTO(Long id, ECarType carType, float cost, float deposit, EFuelType fuelType, int insuranceNumber, EDriverLicenseCategory licenceCategory,  String model, int seatNumber, Office office, Photo photo, boolean technicalStatus, boolean available) {//new cars technicalStatus true by default and is available by deafault
-        this.id=id;
-        this.carType = carType;
-        this.cost = cost;
-        this.deposit = deposit;
-        this.fuelType = fuelType;
-        this.insuranceNumber = insuranceNumber;
-        this.licenceCategory = licenceCategory;
-        this.model = model;
-        this.seatNumber = seatNumber;
-        this.office = office;
-        this.photo = photo;
-        this.technicalStatus = technicalStatus;
-        this.available = available;
-    }
+    private String photo;
 
     public Long getId() {
         return id;
@@ -90,9 +68,9 @@ public class CarDTO {
 
     public void setAvailable(boolean available) { this.available = available; }
 
-    public EDriverLicenseCategory getLicence() { return licenceCategory; }
+    public String getLicence() { return licenceCategory; }
 
-    public void setLicence(EDriverLicenseCategory licenceCategory) {
+    public void setLicence(String licenceCategory) {
         this.licenceCategory = licenceCategory;
     }
 
@@ -100,10 +78,12 @@ public class CarDTO {
 
     public void setModel(String model) { this.model = model; }
 
-    public Office getOfficeId() { return office; }
+    public OfficeDTO getOffice() { return office; }
 
-    public void setOfficeId(Office office) { this.office = office; }
+    public void setOffice(OfficeDTO office) { this.office = office; }
 
+    public Long getOfficeId(){ return this.officeId; }
+    public void setOfficeId(Long officeId) { this.officeId = officeId; }
     public int getSeatNumber() { return seatNumber; }
 
     public void setSeatNumber(int seatNumber) { this.seatNumber = seatNumber; }
@@ -112,16 +92,16 @@ public class CarDTO {
 
     public void setTechnicalStatus(boolean technicalStatus) { this.technicalStatus = technicalStatus; }
 
-    public ECarType getType() { return carType; }
+    public String getType() { return carType; }
 
-    public void setType(ECarType type) { this.carType = carType; }
+    public void setType(String type) { this.carType = carType; }
 
-    public EFuelType getFuelType() { return fuelType; }
+    public String getFuelType() { return fuelType; }
 
-    public void setFuelType(EFuelType fuelType) { this.fuelType = fuelType; }
+    public void setFuelType(String fuelType) { this.fuelType = fuelType; }
 
-    public Photo getPhoto() { return photo; }
+    public String getPhoto() { return photo; }
 
-    public void setPhoto(Photo photo) { this.photo = photo; }
+    public void setPhoto(String photo) { this.photo = photo; }
 
 }
