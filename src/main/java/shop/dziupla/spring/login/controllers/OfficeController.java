@@ -1,5 +1,6 @@
 package shop.dziupla.spring.login.controllers;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.OptimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,16 @@ public class OfficeController {
     @PostMapping("")
     //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<OfficeDTO> createOffice(@RequestBody OfficeDTO office){
+
         try{
             var result = service.createOffice(office);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         }
         catch(NullPointerException | IllegalArgumentException | OptimisticLockException ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch(EntityExistsException ex){
+            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         }
     }
     @DeleteMapping("/{id}")
@@ -74,6 +79,9 @@ public class OfficeController {
         }
         catch(EntityNotFoundException ex){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch(EntityExistsException ex){
+            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         }
     }
 

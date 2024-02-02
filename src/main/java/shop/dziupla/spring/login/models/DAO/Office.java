@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "offices")
+@Table(name = "offices",  uniqueConstraints = {
+        @UniqueConstraint(columnNames = "location")
+})
 public class Office {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

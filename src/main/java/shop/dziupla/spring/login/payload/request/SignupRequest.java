@@ -1,7 +1,5 @@
 package shop.dziupla.spring.login.payload.request;
 
-import java.util.Set;
-
 import jakarta.validation.constraints.*;
 
 public class SignupRequest {
@@ -20,7 +18,7 @@ public class SignupRequest {
 
     private String name;
 
-    private String lastname;
+    private String lastName;
 
     private String role;
 
@@ -64,11 +62,11 @@ public class SignupRequest {
         this.name = name;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

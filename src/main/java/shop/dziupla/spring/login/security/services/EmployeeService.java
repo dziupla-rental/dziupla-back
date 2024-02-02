@@ -21,37 +21,31 @@ public class EmployeeService {
 
     @Autowired EmployeeMapper empMapper;
     @Autowired OfficeRepository officeRepository;
-    public EmployeeDTO DAOtoDTO(Employee employee){
-        return new EmployeeDTO(employee.getId(), employee.getOffice(), employee.getSalary(), employee.getShiftStart(), employee.getShiftEnd(), employee.getUser());
-    }
 
-    public Employee DTOtoDAO(EmployeeDTO employee){
-        return new Employee(employee.getOffice(), employee.getSalary(), employee.getShiftStart(), employee.getShiftEnd(), employee.getUser());
-    }
     public List<EmployeeDTO> getAllEmployees(){
         List<EmployeeDTO> result = new ArrayList<>();
         for(var employee : repository.findAll()){
-            result.add(DAOtoDTO(employee));
+            result.add(empMapper.employeeToEmployeeDTO(employee));
         }
         return result;
     }
 
     public EmployeeDTO addEmployee(EmployeeDTO employee){
         if(employee.getId() != null || employee.getUser() == null)throw new IllegalArgumentException();
-        return DAOtoDTO(repository.save(DTOtoDAO(employee)));
+        return empMapper.employeeToEmployeeDTO(repository.save(empMapper.employeeDTOToEmployee(employee)));
     }
 
     public EmployeeDTO updateEmployee(EmployeeDTO employee){
         if(employee.getId() == null)throw new IllegalArgumentException();
         if(!repository.existsById(employee.getId()))throw new EntityNotFoundException();
         Employee employeeDAO = repository.getReferenceById(employee.getId());
-        empMapper.updateCustomerFromDto(employee, employeeDAO);
-        if(employee.getOfficeId() != null && officeRepository.existsById(employee.getOfficeId()))
-        {
-            employeeDAO.setOffice(officeRepository.findById(employee.getOfficeId())
-                    .orElseThrow(() -> new RuntimeException("Error: Office is not found.")));
-        }
-        return DAOtoDTO(repository.save(employeeDAO));
+        empMapper.updateEmployeeFromDto(employee, employeeDAO);
+//        if(employee.getOfficeId() != null && officeRepository.existsById(employee.getOfficeId()))
+//        {
+//            employeeDAO.setOffice(officeRepository.findById(employee.getOfficeId())
+//                    .orElseThrow(() -> new RuntimeException("Error: Office is not found.")));
+//        }
+        return empMapper.employeeToEmployeeDTO(repository.save(employeeDAO));
     }
 
     public void deleteEmployeeById(Long id){
@@ -62,7 +56,7 @@ public class EmployeeService {
 
     public EmployeeDTO getEmployeeById(Long id){
         if(id == null)throw new NullPointerException();
-        return DAOtoDTO(repository.getReferenceById(id));
+        return empMapper.employeeToEmployeeDTO(repository.getReferenceById(id));
     }
 
 }
