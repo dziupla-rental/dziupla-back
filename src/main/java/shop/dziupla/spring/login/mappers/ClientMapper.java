@@ -4,9 +4,8 @@ import org.mapstruct.*;
 import shop.dziupla.spring.login.models.DAO.Client;
 import shop.dziupla.spring.login.payload.response.ClientDTO;
 
-@Mapper(componentModel = "spring")
-public interface ClientMapper {
-
+@Mapper(componentModel = "spring", uses = DriverLicenseMapper.class)
+public interface ClientMapper { //
     @Mapping(target = "username", source = "user.username")
     @Mapping(target = "email", source = "user.email")
     @Mapping(target = "name", source = "user.name")

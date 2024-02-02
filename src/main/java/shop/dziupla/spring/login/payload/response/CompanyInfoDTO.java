@@ -1,9 +1,9 @@
 package shop.dziupla.spring.login.payload.response;
 
-import ch.qos.logback.core.joran.spi.DefaultClass;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class CompanyInfoDTO {
-    private Long id;
+    @JsonIgnore private Long id;
     private String name;
     private int NIP;
     

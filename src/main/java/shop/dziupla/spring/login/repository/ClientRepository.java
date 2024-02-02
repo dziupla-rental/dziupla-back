@@ -6,5 +6,5 @@ import shop.dziupla.spring.login.models.DAO.Client;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client,Long> {
-
+    Client findByUserId(Long userId);
 }
