@@ -90,7 +90,7 @@ returns http status ok if employee was succesfully deleted
   "email": "domi4@gmail.com",
   "password": "Domii11i1",
   "name": "Domi", //optional
-  "lastname": "Domi",	//optional
+  "lastName": "Domi",	//optional
   "role": "emp"	//optional default is emp
 }
 ```
