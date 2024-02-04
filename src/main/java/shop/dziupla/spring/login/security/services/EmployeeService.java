@@ -2,7 +2,6 @@ package shop.dziupla.spring.login.security.services;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.EntityNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shop.dziupla.spring.login.mappers.EmployeeMapper;
@@ -18,7 +17,7 @@ import java.util.List;
 @Service
 public class EmployeeService {
     @Autowired EmployeeRepository repository;
-    @Autowired ModelMapper mapper;
+    //@Autowired ModelMapper mapper;
 
     @Autowired EmployeeMapper empMapper;
     @Autowired OfficeRepository officeRepository;

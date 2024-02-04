@@ -99,7 +99,7 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
     @PostMapping("/signup/employee")
-    public ResponseEntity<?> registerEmployee(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<EmployeeDTO> registerEmployee(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername()) || userRepository.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -129,8 +129,14 @@ public class AuthController {
 
         EmployeeDTO employee = new EmployeeDTO();
         employee.setUser(user);
-        employeeService.addEmployee(employee);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            var result = employeeService.addEmployee(employee);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
     }
 
     @PostMapping("/signout")
