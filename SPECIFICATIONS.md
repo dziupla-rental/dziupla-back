@@ -86,12 +86,30 @@ returns http status ok if employee was succesfully deleted
 
 ```json
 {
-  "username": "Domi4",
-  "email": "domi4@gmail.com",
+  "username": "Domi10",
+  "email": "domi10@gmail.com",
   "password": "Domii11i1",
   "name": "Domi", //optional
   "lastName": "Domi",	//optional
   "role": "emp"	//optional default is emp
+}
+```
+
+returns employee with id if it was sucessfulyy added
+example result:
+
+```json
+{
+    "id": 3,
+    "office": null,
+    "officeId": null,
+    "salary": 0.0,
+    "shiftStart": null,
+    "shiftEnd": null,
+    "email": "domi10@gmail.com",
+    "name": "Domi",
+    "lastName": "Domi",
+    "role": "ROLE_EMPLOYEE"
 }
 ```
 
