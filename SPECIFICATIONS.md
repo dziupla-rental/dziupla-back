@@ -177,16 +177,16 @@ Response would be:
 ### Get one office by id
 ###### Package into JSON
 `get api/office/id`
-- A office of given id or 404 not found message if office doesn't exist
+- An office of given id or 404 not found message if office doesn't exist
 ```json
 {
     "id": 2,
     "location": "Nowy Sacz"
 }
 ```
-### create office
+### Create office
 ###### Package into JSON
-`post api/office/id`
+`post api/office`
 - location must not be blank, it isn't possible to create 2 offices of the same location
 ```json
 {
