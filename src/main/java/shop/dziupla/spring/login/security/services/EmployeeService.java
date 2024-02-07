@@ -1,80 +1,68 @@
 package shop.dziupla.spring.login.security.services;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.EntityNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shop.dziupla.spring.login.mappers.EmployeeMapper;
 import shop.dziupla.spring.login.models.DAO.Employee;
 import shop.dziupla.spring.login.payload.response.EmployeeDTO;
 import shop.dziupla.spring.login.repository.EmployeeRepository;
+import shop.dziupla.spring.login.repository.OfficeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonSerialize
 @Service
 public class EmployeeService {
+    @Autowired EmployeeRepository repository;
 
-    @Autowired
-    private EmployeeRepository repository;
-
-    @Autowired
-    private EmployeeMapper mapper;
-    public EmployeeService(){}
-
-    public  EmployeeDTO toDTO(Employee employee){
-
-        return new EmployeeDTO(employee.getId(), employee.getOffice(), employee.getSalary(),
-                employee.getShiftStart(), employee.getShiftEnd(), employee.getUser());
+    @Autowired EmployeeMapper empMapper;
+    @Autowired OfficeRepository officeRepository;
+    public EmployeeDTO DAOtoDTO(Employee employee){
+        return new EmployeeDTO(employee.getId(), employee.getOffice(), employee.getSalary(), employee.getShiftStart(), employee.getShiftEnd(), employee.getUser());
     }
-    public  Employee toDAO(EmployeeDTO employee){
 
+    public Employee DTOtoDAO(EmployeeDTO employee){
         return new Employee(employee.getOffice(), employee.getSalary(), employee.getShiftStart(), employee.getShiftEnd(), employee.getUser());
     }
-    public EmployeeDTO getEmployeeById(Long id){
-        if(id == null)throw new NullPointerException();
-        try{
-            var result = repository.getReferenceById(id);
-            return toDTO(result);
-        }
-        catch(EntityNotFoundException ex){
-            return null;
-        }
-    }
-
     public List<EmployeeDTO> getAllEmployees(){
-        var result = new ArrayList<EmployeeDTO>();
+        List<EmployeeDTO> result = new ArrayList<>();
         for(var employee : repository.findAll()){
-            result.add(toDTO(employee));
+            result.add(DAOtoDTO(employee));
         }
         return result;
     }
+
     public EmployeeDTO addEmployee(EmployeeDTO employee){
-        if(employee.getId() != null){return null;}
-        var result = repository.save(toDAO(employee));
-        return toDTO(result);
-    }
-
-    public void deleteEmployee(Long id){
-        try {
-            if(!repository.existsById(id)) throw new EntityNotFoundException();
-            repository.deleteById(id);
-        }
-        catch(IllegalArgumentException ex){
-            throw new NullPointerException();
-        }
-
+        if(employee.getId() != null || employee.getUser() == null)throw new IllegalArgumentException();
+        return DAOtoDTO(repository.save(DTOtoDAO(employee)));
     }
 
     public EmployeeDTO updateEmployee(EmployeeDTO employee){
-        if(employee.getId() == null || employee.getUser() != null) throw new NullPointerException();
-        try{
-            Employee employeeDAO = repository.getReferenceById(employee.getId());
-            mapper.updateCustomerFromDto(employee, employeeDAO);
-            repository.save(employeeDAO);
-            return toDTO(employeeDAO);
+        if(employee.getId() == null)throw new IllegalArgumentException();
+        if(!repository.existsById(employee.getId()))throw new EntityNotFoundException();
+        Employee employeeDAO = repository.getReferenceById(employee.getId());
+        empMapper.updateCustomerFromDto(employee, employeeDAO);
+        if(employee.getOfficeId() != null && officeRepository.existsById(employee.getOfficeId()))
+        {
+            employeeDAO.setOffice(officeRepository.findById(employee.getOfficeId())
+                    .orElseThrow(() -> new RuntimeException("Error: Office is not found.")));
         }
-        catch(EntityNotFoundException ex){
-            return null;
-        }
+        return DAOtoDTO(repository.save(employeeDAO));
     }
+
+    public void deleteEmployeeById(Long id){
+        if(id == null)throw new NullPointerException();
+        if(!repository.existsById(id)) throw new EntityNotFoundException();
+        repository.deleteById(id);
+    }
+
+    public EmployeeDTO getEmployeeById(Long id){
+        if(id == null)throw new NullPointerException();
+        return DAOtoDTO(repository.getReferenceById(id));
+    }
+
 }

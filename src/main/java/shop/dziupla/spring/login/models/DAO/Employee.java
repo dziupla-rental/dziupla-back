@@ -11,8 +11,8 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "office_id", referencedColumnName = "id")
+    @ManyToOne(optional = true)
+    @JoinColumn(referencedColumnName = "id")
     private Office office;
 
     private double salary;
@@ -21,7 +21,7 @@ public class Employee {
 
     private LocalTime shiftEnd;
 
-    @OneToOne(optional = false, cascade =  CascadeType.ALL)
+    @OneToOne(optional = false, cascade =  CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -38,7 +38,6 @@ public class Employee {
 
     public Office getOffice() {return office;}
     public void setOffice(Office office) {this.office = office;}
-
 
     public double getSalary() {return salary;}
     public void setSalary(double salary) {this.salary = salary;}
