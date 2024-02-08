@@ -21,6 +21,7 @@ public abstract class CarMapper {
     //@Mapping(target = "office")
     public abstract CarDTO carToCarDTO(Car car);
     @Mapping(target = "photo", source = "photo", qualifiedByName = "getPhotoByUrl")
+    @Mapping(target = "office", source = "officeId", qualifiedByName = "getOfficeById")
     public abstract Car carDTOToCar(CarDTO carDTO);
     @Named("getPhotoByUrl")
     Photo getPhotoByUrl(String photo){

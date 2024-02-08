@@ -85,11 +85,14 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/employee").permitAll()
                                 .requestMatchers("/api/employee/**").permitAll()
                                 .requestMatchers("/api/rental/**").permitAll()
                                 .requestMatchers("/api/car/**").permitAll()
                                 .requestMatchers("/api/car").permitAll()
                                 .requestMatchers("/api/statistics/**").permitAll()
+                                .requestMatchers("/api/office").permitAll()
+                                .requestMatchers("/api/office/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll() //TODO this one is not needed, remove it when TestController is removed
                                 .requestMatchers("/api/client/**").permitAll()
                                 .anyRequest().authenticated()

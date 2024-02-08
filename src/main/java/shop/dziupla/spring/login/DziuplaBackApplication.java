@@ -26,7 +26,7 @@ public class DziuplaBackApplication  implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		var office = new Office("Nowy Sacz");
+	//	var office = new Office("Nowy Sacz");
 //		var user = new User("Wika2", "wika2@gmail.com", "wika21234WWWsika");
 //		var role = new Role(ERole.ROLE_EMPLOYEE);
 //		var roleSet = new HashSet<Role>();
@@ -39,7 +39,7 @@ public class DziuplaBackApplication  implements CommandLineRunner {
 //		rr.save(new Role(ERole.ROLE_ADMIN));
 //		rr.save(new Role(ERole.ROLE_EMPLOYEE_HR));
 //		rr.save(new Role(ERole.ROLE_EMPLOYEE_MECHANIC));
-		or.save(office);
+		//or.save(office);
 
 
 
