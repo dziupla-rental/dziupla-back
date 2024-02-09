@@ -323,30 +323,113 @@ Or:
 	"error": "java.lang.NullPointerException" // Either the exception name or the error message
 }
 ```
-### ModifyRent
-##### Accepts Request Parameters to Add or Remove Rented Car Data.
-Example request parameters:
-```json
-"car_id": 12
-"rent_from": "25-08-2001"
-"rent_to": "11-09-2001"
-"action": "add" # Can be either add, remove or modify.
-```
-###### Package into JSON
-Response would be:
+## Rental
+### Get all rentals
+get /api/rental
+
+### Get all rentals by client's id
+get /api/rental/client/{id}
+
+### Get rental by id
+get /api/rental/{id}
+
+### Add rental
+post /api/rental
+
+To specify destination and origin offices use _destinationOfficeId_ and _originOfficeId_ fields respectively.
+Fields _destinationOffice_ and _originOffice_ are **used only to return values**.
+(the difference is _id_ at the end)
+ 
+##### Request
 ```json
 {
-	"status": "OK",
-	"error": ""
+    "carId": 4,
+    "clientId": 1,
+    "originOfficeId": 8,
+    "destinationOfficeId": 6,
+    "protocolNumber": 420420420,
+    "startDate": "2024-02-09",
+    "endDate": "2024-02-11",
+    "additions": [
+        "ADDITION_DECORATION",
+        "ADDITION_DELIVERY",
+        "ADDITION_INSURANCE"
+    ]
 }
 ```
-Or:
+
+##### Response
 ```json
 {
-	"status": "Error!",
-	"error": "java.lang.NullPointerException" // Either the exception name or the error message
+    "id": 2,
+    "carId": 4,
+    "clientId": 1,
+    "originOffice": {
+        "id": 8,
+        "location": "Kingdom of Halemba"
+    },
+    "destinationOffice": {
+        "id": 6,
+        "location": "Chebzie :<"
+    },
+    "protocolNumber": 420420420,
+    "startDate": "2024-02-09",
+    "endDate": "2024-02-11",
+    "additions": [
+        "ADDITION_DECORATION",
+        "ADDITION_DELIVERY",
+        "ADDITION_INSURANCE"
+    ]
 }
 ```
+
+### Modify rental
+put /api/rental
+
+To specify destination and origin offices use _destinationOfficeId_ and _originOfficeId_ fields respectively.
+Fields _destinationOffice_ and _originOffice_ are **used only to return values**.
+(the difference is _id_ at the end)
+
+##### Request
+```json
+{
+    "id": 1,
+    "protocolNumber": 4,
+    "originOfficeId": 6,
+    "destinationOfficeId": 5,
+    "additions": [
+        "ADDITION_DECORATION",
+        "ADDITION_INSURANCE"
+    ]
+}
+```
+##### Response
+```json
+{
+    "id": 1,
+    "carId": 5,
+    "clientId": 1,
+    "originOffice": {
+        "id": 6,
+        "location": "Chebzie :<"
+    },
+    "destinationOffice": {
+        "id": 5,
+        "location": "Bytom"
+    },
+    "protocolNumber": 4,
+    "startDate": "2024-02-11",
+    "endDate": "2024-02-11",
+    "additions": [
+        "ADDITION_DECORATION",
+        "ADDITION_INSURANCE"
+    ]
+}
+```
+
+### Delete rental by id
+delete /api/rental/{id}
+
 ### Statistics
 ###### Package into JSON
 Variables:
