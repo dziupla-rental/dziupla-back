@@ -1,14 +1,9 @@
 package shop.dziupla.spring.login.controllers;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,23 +11,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import shop.dziupla.spring.login.models.ERole;
-import shop.dziupla.spring.login.models.Role;
-import shop.dziupla.spring.login.models.User;
+import org.springframework.web.bind.annotation.*;
+import shop.dziupla.spring.login.models.DAO.Role;
+import shop.dziupla.spring.login.models.DAO.User;
+import shop.dziupla.spring.login.models.Enums.ERole;
 import shop.dziupla.spring.login.payload.request.LoginRequest;
 import shop.dziupla.spring.login.payload.request.SignupRequest;
-import shop.dziupla.spring.login.payload.response.UserInfoResponse;
+import shop.dziupla.spring.login.payload.response.EmployeeDTO;
 import shop.dziupla.spring.login.payload.response.MessageResponse;
+import shop.dziupla.spring.login.payload.response.UserDTO;
 import shop.dziupla.spring.login.repository.RoleRepository;
 import shop.dziupla.spring.login.repository.UserRepository;
 import shop.dziupla.spring.login.security.jwt.JwtUtils;
+import shop.dziupla.spring.login.security.services.EmployeeService;
 import shop.dziupla.spring.login.security.services.UserDetailsImpl;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 //for Angular Client (withCredentials)
 //@CrossOrigin(origins = "http://localhost:8081", maxAge = 3600, allowCredentials="true")
@@ -51,6 +46,9 @@ public class AuthController {
 
     @Autowired
     PasswordEncoder encoder;
+
+    @Autowired
+    EmployeeService employeeService;
 
     @Autowired
     JwtUtils jwtUtils;
@@ -72,10 +70,10 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(new UserInfoResponse(userDetails.getId(),
+                .body(new UserDTO(userDetails.getId(),
                         userDetails.getUsername(),
                         userDetails.getEmail(),
-                        roles));
+                        roles.get(0)));
     }
 
     @PostMapping("/signup")
@@ -91,42 +89,54 @@ public class AuthController {
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+                encoder.encode(signUpRequest.getPassword()), signUpRequest.getName(),
+                signUpRequest.getLastName());
 
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-
-                        break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
+        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        user.setRole(userRole);
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+    @PostMapping("/signup/employee")
+    public ResponseEntity<EmployeeDTO> registerEmployee(@Valid @RequestBody SignupRequest signUpRequest) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername()) || userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        user.setRoles(roles);
+        // Create new user's account
+        User user = new User(signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword()), signUpRequest.getName(),
+                signUpRequest.getLastName());
+
+        String strRole = signUpRequest.getRole();
+        Role role = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+
+        if (strRole != null) {
+            role = switch (strRole) {
+                case "empMech" -> roleRepository.findByName(ERole.ROLE_EMPLOYEE_MECHANIC)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                case "empHR" -> roleRepository.findByName(ERole.ROLE_EMPLOYEE_HR)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                default -> roleRepository.findByName(ERole.ROLE_EMPLOYEE)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            };
+        }
+        user.setRole(role);
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        EmployeeDTO employee = new EmployeeDTO();
+        employee.setUser(user);
+        try {
+            var result = employeeService.addEmployee(employee);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
     }
 
     @PostMapping("/signout")

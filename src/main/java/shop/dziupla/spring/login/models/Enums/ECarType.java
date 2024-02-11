@@ -1,4 +1,4 @@
-package shop.dziupla.spring.login.models;
+package shop.dziupla.spring.login.models.Enums;
 
 public enum ECarType {
     SEDAN,
