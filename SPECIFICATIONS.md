@@ -130,6 +130,7 @@ Example request parameters:
     "shiftEnd": "16:00:00"
 }
 ```
+
 ###### Package into JSON
 Response would be:
 ```json

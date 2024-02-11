@@ -1,6 +1,7 @@
-package shop.dziupla.spring.login.models;
+package shop.dziupla.spring.login.models.DAO;
 
 import jakarta.persistence.*;
+import shop.dziupla.spring.login.models.Enums.ERole;
 
 @Entity
 @Table(name = "roles")
