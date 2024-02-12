@@ -79,4 +79,50 @@ public class CarController {
             return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         }
     }
+    ////////////////////SERVICED////////////
+    @GetMapping("/service")
+    public ResponseEntity<List<CarDTO>> getServicedCars() {
+        return service.getServicedCars().isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+            :new ResponseEntity<>(service.getServicedCars(), HttpStatus.OK);
+
+    }
+    ////////////////////FUNCTIONAL//////////
+    @GetMapping("/functional")
+    public ResponseEntity<List<CarDTO>> getFunctionalCars() {
+        return service.getFunctionalCars().isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                :new ResponseEntity<>(service.getFunctionalCars(), HttpStatus.OK);
+
+    }
+    /////////////////BY//OFFICE//ID/////////
+    @GetMapping("/carByOfficeId/{id}")
+    public ResponseEntity<List<CarDTO>> getCarsByOfficeId(@PathVariable("id") Long id) {
+        return service.getCarsByOffice(id).isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                :new ResponseEntity<>(service.getCarsByOffice(id), HttpStatus.OK);
+
+    }
+    /////////////////BY//OFFICE//STRING/////
+    @GetMapping("/carByOffice/{office}")
+    public ResponseEntity<List<CarDTO>> getCarsByOffice(@PathVariable("office") String office) {
+        return service.getCarsByOffice(office).isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                :new ResponseEntity<>(service.getCarsByOffice(office), HttpStatus.OK);
+
+    }
+    @GetMapping("/carByOffice/{office}/functional")
+    public ResponseEntity<List<CarDTO>> getCarsDoubleFiltered(@PathVariable("office") String office) {
+        return service.getCarsDoubleFiltered(office).isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                :new ResponseEntity<>(service.getCarsDoubleFiltered(office), HttpStatus.OK);
+
+    }
+    @GetMapping("/carByOfficeId/{id}/functional")
+    public ResponseEntity<List<CarDTO>> getCarsDoubleFilteredId(@PathVariable("id") Long id) {
+        return service.getCarsDoubleFilteredId(id).isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                :new ResponseEntity<>(service.getCarsDoubleFilteredId(id), HttpStatus.OK);
+
+    }
 }

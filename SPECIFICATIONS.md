@@ -110,105 +110,149 @@ For a User ID:
 { "role": "" }
 ```
 
-### Cars List
-request formatted thusly:
-```json
-{
-	"office": "Warszawa",
-	"available_start": "12-05-2024",
-	"available_end": "18-05-2024"
-}
-```
-##### Package into JSON
-For a certain date and office locatio (Supplied in the request):
-
-- Car types list
-- Fuel types list
-- Cars list
-
-An example response object:
-```json
-{
-	"car_types": [
-	"hatchback",
-	"sedan"
-	],
-	"fuel_types": [
-	"electric",
-	"petrol"
-	],
-	"cars": [
-	{},
-	{}
-	]
-}
-```
-
-An example of a "Car" object:
-```json
-{
-	"model": "Toyota Corolla",
-	"id": 123,
-	"type": "hatchback",
-	"cost": 50.4,
-	"deposit": 200.1,
-	"availability": true, // Has to be the availability for the date frame in the request
-	"seat_number": 4,
-	"fuel_type": 1,
-	"image_url": "https://i.imgur.com/P74meQD.png",
-	"office": "Gliwice"
-}
-```
-
 ### Car
-##### Package into JSON
-For a certain car id (Supplied in the request):
-An example of a "Car" object:
+###### Package into JSON
+`get api/car`
+- A list of all cars and their respective IDs
 ```json
 {
-	"model": "Toyota Corolla",
-	"id": 123,
-	"type": "hatchback",
-	"cost": 50.4,
-	"deposit": 200.1,
-	"availability": true, // Has to be the availability for the date in the request
-	"seat_number": 4,
-	"fuel_type": 1,
-	"image_url": "https://i.imgur.com/P74meQD.png",
-	"office": "Gliwice"
+  "id": 16,
+  "cost": 21.37,
+  "deposit": 8.9,
+  "insuranceNumber": 1,
+  "available": true,
+  "model": "szympki",
+  "office": {
+    "id": 1,
+    "location": "Nowy Sacz"
+  },
+  "officeId": null,
+  "seatNumber": 1,
+  "technicalStatus": false,
+  "fuelType": null,
+  "photo": null,
+  "type": null,
+  "licence": null
+}
+```
+### Get one office by id
+###### Package into JSON
+`get api/car/id`
+- An car of given id or 404 not found message if office doesn't exist
+```json
+{
+  "id": 16,
+  "cost": 21.37,
+  "deposit": 8.9,
+  "insuranceNumber": 1,
+  "available": true,
+  "model": "szympki",
+  "office": {
+    "id": 1,
+    "location": "Nowy Sacz"
+  },
+  "officeId": null,
+  "seatNumber": 1,
+  "technicalStatus": false,
+  "fuelType": null,
+  "photo": null,
+  "type": null,
+  "licence": null
+}
+```
+### Create car
+###### Package into JSON
+`post api/car`
+- All paremeters except officeId, photo, fuleType, type and license must not be blank.
+```json
+{
+  "cost":21.37,
+  "deposit": 8.9,
+  "insuranceNumber":1,
+  "available":true,
+  "model":"szympki",
+  "seatNumber":1,
+  "technicalStatus":false,
+}
+```
+- response would be
+```json
+{
+
+  "id": 17,
+  "cost": 21.37,
+  "deposit": 8.9,
+  "insuranceNumber": 1,
+  "available": true,
+  "model": "szympki",
+  "office": null,
+  "officeId": null,
+  "seatNumber": 1,
+  "technicalStatus": false,
+  "fuelType": null,
+  "photo": null,
+  "type": null,
+  "licence": null
+
 }
 ```
 
-### ModifyCar
-##### Accepts Request Parameters to Add, Modify or Remove Car Data.
-Example request parameters:
-```json
-"model": "Toyota Corolla"
-"id": 123,
-"type": "sedan" # Zmienione dane
-"cost": 50.4
-"deposit": 200.1
-"seat_number": 4
-"fuel_type": "petrol"
-"image_url": "https://i.imgur.com/P74meQD.png"
-"office": "Gliwice"
-"action": "add" # Can be either add, remove or modify. If remove, no other parameters than the ID are necessary.
-```
+### delete car
 ###### Package into JSON
-Response would be:
-```json
+`delete api/car/id`
+- returns status OK if office was successfully deleted
+
+### update car
+###### Package into JSON
+`put api/office`
+- car sent in json must have id param.
+ ```json
 {
-	"status": "OK",
-	"error": ""
+  "id": 12,
+  "cost": 11.22,
+  "model": "Accent"
 }
 ```
-Or:
-```json
-{
-	"status": "Error!",
-	"error": "java.lang.NullPointerException" // Either the exception name or the error message
+- in reponse you get udpated car
+ ```json
+ {
+  "id": 12,
+  "cost": 11.22,
+  "deposit": 0.0,
+  "insuranceNumber": 0,
+  "available": false,
+  "model": "Accent",
+  "office": {
+    "id": 1,
+    "location": "Nowy Sacz"
+  },
+  "officeId": null,
+  "seatNumber": 0,
+  "technicalStatus": false,
+  "fuelType": null,
+  "photo": null,
+  "type": null,
+  "licence": null
 }
 ```
+### Filter cars
+`get api/car/service`
+- returns list of all cars in service (unavailable)
+
+`get api/car/functionalCar`
+- returns list of all cars ready to rent
+
+`get api/car/carByOffice/location`
+- returns list of all cars in office given by location
+
+`get api/car/carByOfficeId/id`
+- returns list of all cars in office given by id
+
+`get api/car/carByOfficeId/id/functional`
+- returns only functional cars from office given by id
+
+`get api/car/carByOffice/location/functional`
+- returns only functional cars from location given by location
 ### ModifyRent
 ##### Accepts Request Parameters to Add or Remove Rented Car Data.
 Example request parameters:

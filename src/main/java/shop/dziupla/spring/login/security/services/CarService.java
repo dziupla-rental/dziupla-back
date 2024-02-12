@@ -11,6 +11,7 @@ import shop.dziupla.spring.login.payload.response.CarDTO;
 import shop.dziupla.spring.login.payload.response.EmployeeDTO;
 import shop.dziupla.spring.login.payload.response.OfficeDTO;
 import shop.dziupla.spring.login.repository.CarRepository;
+import shop.dziupla.spring.login.repository.OfficeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.List;
 public class CarService {
     @Autowired
     CarRepository repository;
+    @Autowired
+    OfficeRepository officeRepository;
     @Autowired
     CarMapper mapper;
 
@@ -56,8 +59,12 @@ public class CarService {
         return list;
     }
     public List<CarDTO> getCarsByOffice(long officeId) {
+        if(!officeRepository.existsById(officeId)) throw new EntityNotFoundException();
         List<CarDTO> list = new ArrayList<>();
         for (Car c : repository.findAll()) {
+            if(c.getOffice()==null){
+                continue;
+            }
             if (c.getOffice().getId()==officeId) {
                 list.add(mapper.carToCarDTO(c));
             }
@@ -65,9 +72,41 @@ public class CarService {
         return list;
     }
     public List<CarDTO> getCarsByOffice(String location) {
+        if(!officeRepository.existsByLocation(location)) throw new EntityNotFoundException();
         List<CarDTO> list = new ArrayList<>();
         for (Car c : repository.findAll()) {
+            if(c.getOffice()==null){
+                continue;
+            }
             if (c.getOffice().getLocation().equals(location)) {
+                list.add(mapper.carToCarDTO(c));
+            }
+        }
+        return list;
+    }
+    public List<CarDTO> getCarsDoubleFiltered(String location) {
+        if(location == null)throw new NullPointerException();
+        if(!officeRepository.existsByLocation(location)) throw new EntityNotFoundException();
+        List<CarDTO> list = new ArrayList<>();
+        for (Car c : repository.findAll()) {
+            if(c.getOffice()==null){
+                continue;
+            }
+            if (c.getOffice().getLocation().equals(location) && c.isAvailable()) {
+                list.add(mapper.carToCarDTO(c));
+            }
+        }
+        return list;
+    }
+    public List<CarDTO> getCarsDoubleFilteredId(Long id) {
+        if(id == null)throw new NullPointerException();
+        if(!officeRepository.existsById(id)) throw new EntityNotFoundException();
+        List<CarDTO> list = new ArrayList<>();
+        for (Car c : repository.findAll()) {
+            if(c.getOffice()==null){
+                continue;
+            }
+            if (c.getOffice().getId().equals(id) && c.isAvailable()) {
                 list.add(mapper.carToCarDTO(c));
             }
         }
