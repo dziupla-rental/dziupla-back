@@ -1,5 +1,7 @@
 package shop.dziupla.spring.login.payload.response;
 
+import java.util.Dictionary;
+
 public class StatisticsDTO {
     private long carCount;
     private long rentedCars;
@@ -8,6 +10,7 @@ public class StatisticsDTO {
     private long clientCount;
     private long officeCount;
     private long employeeCount;
+    private Dictionary<Integer, String> income;
     public StatisticsDTO(){
 
     }
@@ -66,5 +69,13 @@ public class StatisticsDTO {
 
     public void setEmployeeCount(long employeeCount) {
         this.employeeCount = employeeCount;
+    }
+
+    public Dictionary<Integer, String> getIncome() {
+        return income;
+    }
+
+    public void setIncome(Dictionary<Integer, String> income) {
+        this.income = income;
     }
 }

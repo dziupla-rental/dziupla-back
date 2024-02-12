@@ -2,6 +2,8 @@ package shop.dziupla.spring.login.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import shop.dziupla.spring.login.models.DAO.Car;
+import shop.dziupla.spring.login.models.DAO.Client;
 
 import java.util.Date;
 

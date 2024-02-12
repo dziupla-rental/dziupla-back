@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shop.dziupla.spring.login.payload.response.StatisticsDTO;
 import shop.dziupla.spring.login.repository.CarRepository;
+import shop.dziupla.spring.login.repository.ClientRepository;
 import shop.dziupla.spring.login.repository.EmployeeRepository;
 import shop.dziupla.spring.login.repository.OfficeRepository;
 
@@ -15,6 +16,8 @@ public class StatisticsService {
     EmployeeRepository employeeRepository;
     @Autowired
     OfficeRepository officeRepository;
+    @Autowired
+    ClientRepository clientRepository;
     public StatisticsDTO getStatistics(){
         var result = new StatisticsDTO();
         result.setCarCount(carRepository.count());
@@ -23,6 +26,7 @@ public class StatisticsService {
         result.setRentedCars(result.getCarCount() - result.getAvailableCars() - result.getServicedCars());
         result.setEmployeeCount(employeeRepository.count());
         result.setOfficeCount(officeRepository.count());
+        result.setClientCount(clientRepository.count());
         return result;
     }
 }
