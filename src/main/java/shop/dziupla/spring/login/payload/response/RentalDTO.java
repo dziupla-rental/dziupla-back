@@ -20,6 +20,7 @@ public class RentalDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long destinationOfficeId;
 
+    private Float cost;
     public RentalDTO() { }
 
     @Default
@@ -71,4 +72,12 @@ public class RentalDTO {
 
     public Long getDestinationOfficeId() { return destinationOfficeId; }
     public void setDestinationOfficeId(Long id) { this.destinationOfficeId = id; }
+
+    public Float getCost() {
+        return cost;
+    }
+
+    public void setCost(Float cost) {
+        this.cost = cost;
+    }
 }

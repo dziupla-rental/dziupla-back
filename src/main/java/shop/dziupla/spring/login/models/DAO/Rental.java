@@ -48,11 +48,13 @@ public class Rental {
 
     private LocalDate endDate;
 
+    private Float cost;
     @ElementCollection(targetClass = EAddition.class)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "rental_additions")
     @Column(name = "addition")
     private List<EAddition> additions;
+
 
     public Rental() {}
     public Rental(Car car, Client client, Office originOffice, Office destinationOffice, Long protocolNumber,
@@ -91,6 +93,29 @@ public class Rental {
     public LocalDate getEndDate() { return endDate; }
     public void setEndDate(LocalDate end) { this.endDate = end; }
 
-    public List<EAddition> getAdditions() { return additions; }
+    public List<EAddition> getAdditions() {
+        try {
+            additions.isEmpty();
+            return additions;
+        }
+        catch (Exception ex){
+            return null;
+        }
+    }
+
     public void setAdditions(List<EAddition> additions) { this.additions = additions; }
+
+    public Float getCost() {
+        if(cost == null) {
+            cost = car.getCost();
+            for (var x : additions) {
+                cost += x.getPrice();
+            }
+        }
+        return cost;
+    }
+
+    public void setCost(Float cost) {
+        this.cost = cost;
+    }
 }

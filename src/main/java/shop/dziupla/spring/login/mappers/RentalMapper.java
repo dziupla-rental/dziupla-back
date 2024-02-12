@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import shop.dziupla.spring.login.models.DAO.Car;
 import shop.dziupla.spring.login.models.DAO.Office;
 import shop.dziupla.spring.login.models.DAO.Rental;
+import shop.dziupla.spring.login.models.Enums.EAddition;
 import shop.dziupla.spring.login.payload.response.RentalDTO;
 import shop.dziupla.spring.login.models.DAO.Client;
 import shop.dziupla.spring.login.repository.CarRepository;
@@ -23,14 +24,17 @@ public abstract class RentalMapper {
     @Autowired
     private OfficeRepository officeRepository;
 
+
     @Mapping(target = "clientId", source = "client.id")
     @Mapping(target = "carId", source = "car.id")
+    @Mapping(target = "cost", source = "rental", qualifiedByName = "calculateCost1")
     public abstract RentalDTO rentalToRentalDTO(Rental rental);
 
     @Mapping(target = "client", source = "clientId", qualifiedByName = "getClientById")
     @Mapping(target = "car", source = "carId", qualifiedByName = "getCarById")
     @Mapping(target = "originOffice", source = "originOfficeId", qualifiedByName = "getOfficeById1")
     @Mapping(target = "destinationOffice", source = "destinationOfficeId", qualifiedByName = "getOfficeById1")
+    @Mapping(target = "cost", source = "rentalDTO", qualifiedByName = "calculateCost")
     public abstract Rental rentalDTOToRental(RentalDTO rentalDTO);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
@@ -38,6 +42,7 @@ public abstract class RentalMapper {
     @Mapping(target = "car", source = "carId", qualifiedByName = "getCarById")
     @Mapping(target = "originOffice", source = "originOfficeId", qualifiedByName = "getOfficeById1")
     @Mapping(target = "destinationOffice", source = "destinationOfficeId", qualifiedByName = "getOfficeById1")
+    @Mapping(target = "cost", source = "dto", qualifiedByName = "calculateCost")
     public abstract void updateRentalFromDTO(RentalDTO dto, @MappingTarget Rental entity);
 
     @Named("getClientById")
@@ -68,4 +73,30 @@ public abstract class RentalMapper {
             return null;
         }
     }
+
+    @Named("calculateCost")
+    Float calculateCost(RentalDTO rental){
+        try {
+            Float result = carRepository.getReferenceById(rental.getCarId()).getCost();
+            for (var add : rental.getAdditions()) {
+                result += EAddition.valueOf(add).getPrice();
+            }
+            return result;
+        }
+        catch(Exception ex){
+            return null;
+        }
+
+    }
+
+    @Named("calculateCost1")
+    Float calculateCost1(Rental rental){
+        Float result = carRepository.getReferenceById(rental.getCar().getId()).getCost();
+        for(var add : rental.getAdditions()){
+            result += add.getPrice();
+        }
+        return result;
+    }
+
+
 }

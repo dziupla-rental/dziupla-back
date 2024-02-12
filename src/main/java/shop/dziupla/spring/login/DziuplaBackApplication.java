@@ -39,6 +39,9 @@ public class DziuplaBackApplication  implements CommandLineRunner {
 	@Autowired
 	ClientMapper clientMapper;
 
+	@Autowired
+	CarRepository carRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(DziuplaBackApplication.class, args);
 
@@ -75,6 +78,17 @@ public class DziuplaBackApplication  implements CommandLineRunner {
 //
 //		client.setLicenses(List.of(driverLicense));
 //		clientRepository.save(client);
+
+//		var car = new Car();
+//		car.setCost(1200);
+//		car.setDeposit(200);
+//		car.setInsuranceNumber(12345);
+//		car.setAvailable(true);
+//		car.setModel("ABC");
+//		car.setSeatNumber(4);
+//		car.setTechnicalStatus(true);
+//
+//		carRepository.save(car);
 
 //		var user = userRepository.findById(4L);
 //		CompanyInfo companyInfo = new CompanyInfo("biedronka SA", 2222);

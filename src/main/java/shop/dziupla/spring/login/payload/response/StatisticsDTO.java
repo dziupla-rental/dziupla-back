@@ -1,6 +1,9 @@
 package shop.dziupla.spring.login.payload.response;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.Map;
 
 public class StatisticsDTO {
     private long carCount;
@@ -10,7 +13,7 @@ public class StatisticsDTO {
     private long clientCount;
     private long officeCount;
     private long employeeCount;
-    private Dictionary<Integer, String> income;
+    private ArrayList<Double> income;
     public StatisticsDTO(){
 
     }
@@ -71,11 +74,11 @@ public class StatisticsDTO {
         this.employeeCount = employeeCount;
     }
 
-    public Dictionary<Integer, String> getIncome() {
+    public ArrayList<Double> getIncome() {
         return income;
     }
 
-    public void setIncome(Dictionary<Integer, String> income) {
+    public void setIncome(ArrayList<Double> income) {
         this.income = income;
     }
 }
