@@ -172,7 +172,7 @@ For a User ID:
   "available":true,
   "model":"szympki",
   "seatNumber":1,
-  "technicalStatus":false,
+  "technicalStatus":false
 }
 ```
 - response would be
