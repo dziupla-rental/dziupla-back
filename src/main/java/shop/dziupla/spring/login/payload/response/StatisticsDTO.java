@@ -1,9 +1,6 @@
 package shop.dziupla.spring.login.payload.response;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Map;
 
 public class StatisticsDTO {
     private long carCount;
