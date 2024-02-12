@@ -12,7 +12,7 @@ public class CarController {
     // TODO autoryzacja wybranyuch ról
     // TODO podpięcie do modelu danych
     @GetMapping("")
-    public List<CarDTO> getAllCars(@PathVariable Boolean onlyAvailable) {
+    public List<CarDTO> getAllCars(@PathVariable Long officeId) {
 
         return null;
     }
