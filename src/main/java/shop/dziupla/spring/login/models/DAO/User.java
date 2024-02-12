@@ -35,7 +35,7 @@ public class User {
     @Size(max = 30)
     private String lastname;
 
-    @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id")
     private Role role;
 
