@@ -20,7 +20,9 @@ public class Photo {
     public Photo() {
 
     }
-
+    public Photo(String url) {
+        this.url = url;
+    }
     public Integer getId() {
         return id;
     }
