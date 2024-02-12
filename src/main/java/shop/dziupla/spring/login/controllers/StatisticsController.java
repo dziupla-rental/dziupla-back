@@ -20,7 +20,7 @@ public class StatisticsController {
     StatisticsService service;
     @GetMapping("")
     public ResponseEntity<StatisticsDTO> getStatistics() {
-
+        return null;
 
     }
 }

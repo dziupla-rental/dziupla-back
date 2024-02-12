@@ -8,6 +8,6 @@ public class StatisticsService {
 
     public StatisticsDTO getStatistics(){
         var result = new StatisticsDTO();
-        result.setAvailableCars();
+        return null;
     }
 }
