@@ -84,7 +84,6 @@ public class ClientService {
 
         Client client = repository.getReferenceById(id);
         mapper.updateClientFromDto(clientDTO, client);
-        repository.save(client);
 
         return mapper.clientToClientDTO(repository.save(client));
     }

@@ -21,7 +21,7 @@ public class Client {
     private CompanyInfo companyInfo;    // null if is an individual client
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<DriverLicense> licenses;
+    private List<DriverLicense> licenses;
 
     public Client() {}
     public @Default Client(User user, CompanyInfo companyInfo, List<DriverLicense> licenses) {
