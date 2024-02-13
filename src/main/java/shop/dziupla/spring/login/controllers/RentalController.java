@@ -66,6 +66,8 @@ public class RentalController {
     @PostMapping("")
     public ResponseEntity<RentalDTO> addRental(@RequestBody RentalDTO request) {
         try {
+            if(!service.isCarAvailableInScope(request.getCarId(), request.getStartDate(), request.getEndDate()))
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             var response = service.addRental(request);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         }

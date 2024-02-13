@@ -82,4 +82,12 @@ public class RentalService {
     public Boolean isCarAvailable(Long carId, LocalDate date) {
         return repository.existsByDateBetweenStartAndEnd(carId, date);
     }
+
+    public Boolean isCarAvailableInScope(Long carId, LocalDate startDate, LocalDate endDate) {
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            if(!repository.existsByDateBetweenStartAndEnd(carId, date))
+                return false;
+        }
+        return true;
+    }
 }
