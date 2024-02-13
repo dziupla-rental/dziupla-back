@@ -6,8 +6,7 @@ import shop.dziupla.spring.login.payload.response.StatisticsDTO;
 import shop.dziupla.spring.login.repository.*;
 
 import java.time.LocalDate;
-import java.util.*;
-import java.sql.Date;
+import java.util.ArrayList;
 
 @Service
 public class StatisticsService {

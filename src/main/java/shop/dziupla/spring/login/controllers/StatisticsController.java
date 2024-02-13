@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import shop.dziupla.spring.endpoints.response.RespStatistics;
 import shop.dziupla.spring.login.payload.response.StatisticsDTO;
-import shop.dziupla.spring.login.security.services.EmployeeService;
 import shop.dziupla.spring.login.security.services.StatisticsService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)

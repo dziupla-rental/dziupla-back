@@ -6,16 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 import shop.dziupla.spring.login.mappers.ClientMapper;
-import shop.dziupla.spring.login.models.DAO.*;
-import shop.dziupla.spring.login.models.Enums.EDriverLicenseCategory;
-import shop.dziupla.spring.login.models.Enums.ERole;
-import shop.dziupla.spring.login.payload.response.DriverLicenseDTO;
 import shop.dziupla.spring.login.repository.*;
 import shop.dziupla.spring.login.security.services.EmployeeService;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @SpringBootApplication
 public class DziuplaBackApplication  implements CommandLineRunner {
