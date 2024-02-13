@@ -9,6 +9,7 @@ import shop.dziupla.spring.login.payload.response.RentalDTO;
 import shop.dziupla.spring.login.repository.ClientRepository;
 import shop.dziupla.spring.login.repository.RentalRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,5 +77,9 @@ public class RentalService {
         mapper.updateRentalFromDTO(rentalDTO, rental);
 
         return mapper.rentalToRentalDTO(repository.save(rental));
+    }
+
+    public Boolean isCarAvailable(Long carId, LocalDate date) {
+        return repository.existsByDateBetweenStartAndEnd(carId, date);
     }
 }

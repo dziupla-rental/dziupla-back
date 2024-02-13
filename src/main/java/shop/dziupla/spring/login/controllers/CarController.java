@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import shop.dziupla.spring.login.payload.response.CarDTO;
 import shop.dziupla.spring.login.payload.response.OfficeDTO;
 import shop.dziupla.spring.login.security.services.CarService;
+import shop.dziupla.spring.login.security.services.RentalService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -19,6 +22,9 @@ import java.util.List;
 public class CarController {
     @Autowired
     CarService service;
+    @Autowired
+    RentalService rentalService;
+
     // TODO autoryzacja wybranyuch ról
     // TODO podpięcie do modelu danych
     @GetMapping("")
@@ -77,6 +83,21 @@ public class CarController {
         }
         catch(EntityExistsException ex){
             return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+        }
+    }
+
+    @GetMapping("/available/{id}")
+    public ResponseEntity<Boolean> isCarAvailableById(@PathVariable("id") Long id, @RequestParam(name = "date") String sDate) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+            LocalDate date = LocalDate.parse(sDate, formatter);
+            return new ResponseEntity<>(rentalService.isCarAvailable(id, date), HttpStatus.OK);
+        }
+        catch (NullPointerException | IllegalArgumentException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch (EntityNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
