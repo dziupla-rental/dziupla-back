@@ -1,7 +1,9 @@
 package shop.dziupla.spring.login.mappers;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.javatuples.Pair;
 import org.mapstruct.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import shop.dziupla.spring.login.models.DAO.Car;
 import shop.dziupla.spring.login.models.DAO.Office;
@@ -14,8 +16,7 @@ import shop.dziupla.spring.login.repository.ClientRepository;
 import shop.dziupla.spring.login.repository.OfficeRepository;
 
 @Mapper(componentModel = "spring", uses = {OfficeMapper.class,
-        CarMapper.class
-})
+        CarMapper.class }, imports = Pair.class)
 public abstract class RentalMapper {
     @Autowired
     private ClientRepository clientRepository;
@@ -42,7 +43,9 @@ public abstract class RentalMapper {
     @Mapping(target = "car", source = "carId", qualifiedByName = "getCarById")
     @Mapping(target = "originOffice", source = "originOfficeId", qualifiedByName = "getOfficeById1")
     @Mapping(target = "destinationOffice", source = "destinationOfficeId", qualifiedByName = "getOfficeById1")
-    @Mapping(target = "cost", source = "dto", qualifiedByName = "calculateCost")
+    //@Mapping(target = "cost", source = "dto", qualifiedByName = "calculateCost")
+    //@Mapping(target = "cost", expression = "java((dto.getCost() != null ? calculateCost(dto) : entity.getCost()))")
+    @Mapping(target = "cost", expression = "java(updateCost(new Pair<RentalDTO, Rental>(dto, entity)))")
     public abstract void updateRentalFromDTO(RentalDTO dto, @MappingTarget Rental entity);
 
     @Named("getClientById")
@@ -98,5 +101,46 @@ public abstract class RentalMapper {
         return result;
     }
 
+    @Named("updateCost")
+    Float updateCost(Pair<RentalDTO, Rental> pair){
+        try {
+            RentalDTO tempDto = pair.getValue0();
+            Rental tempEnitty = pair.getValue1();
+            float result = tempEnitty.getCar().getCost();
 
+            if(tempDto.getCarId() != null) {
+                result = carRepository.getReferenceById(tempDto.getCarId()).getCost();
+
+                if(tempDto.getAdditions() != null) {
+                    for (var add : tempDto.getAdditions()) {
+                        result += EAddition.valueOf(add).getPrice();
+                    }
+                    return result;
+                }
+                else {
+                    for (var add : tempEnitty.getAdditions()) {
+                        result += add.getPrice();
+                    }
+                    return result;
+                }
+            }
+
+            if(tempDto.getAdditions() != null) {
+                for (var add : tempDto.getAdditions()) {
+                    result += EAddition.valueOf(add).getPrice();
+                }
+                return result;
+            }
+            else {
+                for (var add : tempEnitty.getAdditions()) {
+                    result += add.getPrice();
+                }
+                return result;
+            }
+        }
+        catch(Exception ex){
+            return null;
+        }
+
+    }
 }
