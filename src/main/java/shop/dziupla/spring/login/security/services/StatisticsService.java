@@ -24,7 +24,13 @@ public class StatisticsService {
     public StatisticsDTO getStatistics(){
         var result = new StatisticsDTO();
         result.setCarCount(carRepository.count());
-        result.setAvailableCars(carRepository.countAllByAvailable(true));
+        int availableCounter = 0;
+        for(var car : carRepository.findAll()){
+            if(rentalRepository.existsByDateBetweenStartAndEnd(car.getId(), LocalDate.now())){
+                availableCounter ++;
+            }
+        }
+        result.setAvailableCars(availableCounter);
         result.setServicedCars(carRepository.countAllByTechnicalStatus(false));
         result.setRentedCars(result.getCarCount() - result.getAvailableCars() - result.getServicedCars());
         result.setEmployeeCount(employeeRepository.count());
