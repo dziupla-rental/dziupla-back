@@ -1,5 +1,5 @@
 # Data Interface Specifications
-==All the requests will be sent with POST==
+
 ## Endpoints (Servlets)
 ### Login
 The login will be implemented according to the instructions:
