@@ -1,10 +1,5 @@
 package shop.dziupla.spring.login.payload.response;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import shop.dziupla.spring.login.models.DAO.Car;
-
 public class PhotoDTO {
     private Long id;
 

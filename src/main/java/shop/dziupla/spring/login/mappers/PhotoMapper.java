@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import shop.dziupla.spring.login.models.DAO.Photo;
 import shop.dziupla.spring.login.payload.response.PhotoDTO;
 import shop.dziupla.spring.login.repository.PhotoRepository;
-import shop.dziupla.spring.login.security.services.PhotoService;
 
 @Mapper(componentModel = "spring")
 public abstract class PhotoMapper {

@@ -1,6 +1,5 @@
 package shop.dziupla.spring.login.mappers;
 
-import org.hibernate.mapping.Component;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import shop.dziupla.spring.login.models.DAO.Car;

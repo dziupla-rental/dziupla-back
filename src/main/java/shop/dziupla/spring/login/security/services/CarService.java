@@ -1,18 +1,13 @@
 package shop.dziupla.spring.login.security.services;
 
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shop.dziupla.spring.login.mappers.CarMapper;
 import shop.dziupla.spring.login.models.DAO.Car;
-import shop.dziupla.spring.login.models.DAO.Office;
 import shop.dziupla.spring.login.payload.response.CarDTO;
-import shop.dziupla.spring.login.payload.response.EmployeeDTO;
-import shop.dziupla.spring.login.payload.response.OfficeDTO;
 import shop.dziupla.spring.login.repository.CarRepository;
 import shop.dziupla.spring.login.repository.OfficeRepository;
-import shop.dziupla.spring.login.repository.PhotoRepository;
 
 import java.util.ArrayList;
 import java.util.List;

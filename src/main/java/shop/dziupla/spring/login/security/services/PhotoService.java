@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shop.dziupla.spring.login.mappers.PhotoMapper;
 import shop.dziupla.spring.login.models.DAO.Photo;
-import shop.dziupla.spring.login.payload.response.CarDTO;
 import shop.dziupla.spring.login.payload.response.PhotoDTO;
 import shop.dziupla.spring.login.repository.PhotoRepository;
 
