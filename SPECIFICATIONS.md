@@ -6,32 +6,49 @@ The login will be implemented according to the instructions:
 - [Backend](https://www.bezkoder.com/spring-boot-login-example-mysql/)
 - [Frontend](https://www.bezkoder.com/angular-17-jwt-auth/)
 - [Fullstack](https://www.bezkoder.com/angular-17-spring-boot-jwt-auth/)
+
+### Roles
+public enum ERole {
+
+    ROLE_USER, (user)
+    
+    ROLE_MODERATOR,
+    
+    ROLE_ADMIN, (admin)
+    
+    ROLE_EMPLOYEE, (emp)
+    
+    ROLE_EMPLOYEE_HR, (empHR)
+    
+    ROLE_EMPLOYEE_MECHANIC (empMech)
+    
+}
+
+if you want to create new user provide names in brackets (in JSON)
+
 ### Employees
 ###### Package into JSON
 `get api/employee`
 - A list of all Employees and their respective IDs
-- Office list
-- Positions list
 ```json
 {
-	"employees": [ 
-		{
-			"name": "Jan Nowak",
-			"id": 23
-		},
-		{
-			"name": "Michał Kowalski",
-			"id": 27
-		}
-	],
-	"offices": [ // Lista dostępnych biur
-	"Gliwice",
-	"Zabrze"
-	],
-	"positions": [ // Lista dostępncyh stanowisk
-	"Mechanik",
-	"Menedżer"
-	]
+[
+   {
+    "id": 4,
+    "office": {
+        "id": 10,
+        "location": "Warszawa"
+    },
+    "officeId": null,
+    "salary": 0.0,
+    "shiftStart": "08:00:00",
+    "shiftEnd": "16:00:00",
+    "email": "dom47@gmail.com",
+    "name": "Domi",
+    "lastName": "wasil",
+    "role": "ROLE_EMPLOYEE_HR"
+}
+]
 }
 ```
 
@@ -42,25 +59,59 @@ The login will be implemented according to the instructions:
 For a provided Employee ID:
 ```json
 {
-	"first_name": "Steve",
-	"last_name": "Gomez",
-	"position": "Mechanik",
-	"id": 12,
-	"salary": 12.3,
-	"shift_start": "08:00:00",
-	"shift_end": 200000,
-	"office": "Gliwice"
+    {
+    "id": 4,
+    "office": {
+        "id": 10,
+        "location": "Warszawa"
+    },
+    "officeId": null,
+    "salary": 0.0,
+    "shiftStart": "08:00:00",
+    "shiftEnd": "16:00:00",
+    "email": "dom47@gmail.com",
+    "name": "Domi",
+    "lastName": "wasil",
+    "role": "ROLE_EMPLOYEE_HR"
+}
 }
 ```
 ### DeleteEmployee
 `delete api/employee/id`
 
+returns http status ok if employee was succesfully deleted
+
 ### AddEmployee
-`post api/employee`
+`post api/auth/signup/employee`
 
-all employee parameters must be sent in json (only id should be empty)
+```json
+{
+  "username": "Domi10",
+  "email": "domi10@gmail.com",
+  "password": "Domii11i1",
+  "name": "Domi", //optional
+  "lastName": "Domi",	//optional
+  "role": "emp"	//optional default is emp
+}
+```
 
-json with added employee (also with id) is returned in response
+returns employee with id if it was sucessfulyy added
+example result:
+
+```json
+{
+    "id": 3,
+    "office": null,
+    "officeId": null,
+    "salary": 0.0,
+    "shiftStart": null,
+    "shiftEnd": null,
+    "email": "domi10@gmail.com",
+    "name": "Domi",
+    "lastName": "Domi",
+    "role": "ROLE_EMPLOYEE"
+}
+```
 
 ### ModifyEmployee
 `put api/employee`
@@ -72,45 +123,109 @@ modified employee is sent in response
 Example request parameters:
 ```json
 {
-  "position": "Menedżer",
-  "id": 12,
-  "shift_start": 90000
+    "id": 6,
+    "officeId": 2,
+    "salary": 1000.0,
+    "shiftStart": "08:00:00",
+    "shiftEnd": "16:00:00"
 }
 ```
-
-
-
-
-
-
-
-
-
-
 ###### Package into JSON
 Response would be:
 ```json
-{
-	"status": "OK",
-	"error": ""
-}
-```
-Or:
-```json
-{
-	"status": "Error!",
-	"error": "java.lang.NullPointerException" // Either the exception name or the error message
-}
-```
 
-### Role
+{
+    "id": 6,
+    "office": {
+        "id": 2,
+        "location": "Nowy Sacz"
+    },
+    "officeId": null,
+    "salary": 1000.0,
+    "shiftStart": "08:00:00",
+    "shiftEnd": "16:00:00",
+    "email": "dom49@gmail.com",
+    "name": "Domi",
+    "lastName": null,
+    "role": "ROLE_EMPLOYEE"
+
+}
+```
+### Offices
+### Get all offices
 ###### Package into JSON
-For a User ID:
+`get api/office`
+- A list of all offices and their respective IDs
 ```json
-{ "role": "" }
+{
+[
+    {
+        "id": 2,
+        "location": "Nowy Sacz"
+    },
+    {
+        "id": 3,
+        "location": "Gliwice"
+    },
+    {
+        "id": 4,
+        "location": "Warszawa"
+    }
+]
+}
+```
+### Get one office by id
+###### Package into JSON
+`get api/office/id`
+- An office of given id or 404 not found message if office doesn't exist
+```json
+{
+    "id": 2,
+    "location": "Nowy Sacz"
+}
+```
+### Create office
+###### Package into JSON
+`post api/office`
+- location must not be blank, it isn't possible to create 2 offices of the same location
+```json
+{
+    "location": "Katowice"
+}
+```
+- response would be
+```json
+{
+    "id": 11,
+    "location": "Katowice"
+}
 ```
 
-### Car
+### Delete office
+###### Package into JSON
+`delete api/office/id`
+- returns status OK if office was successfully deleted
+  
+### Update office
+###### Package into JSON
+`put api/office`
+- office sent in json must have id param, you can't change location to a location that already exists
+ ```json
+  {
+    "id": 5,
+    "location": "Gliwice"
+}
+```
+- in reponse you get udpated office
+ ```json
+  {
+    "id": 5,
+    "location": "Gliwice"
+}
+```  
+
+## Car
+### Get all cars
 ###### Package into JSON
 `get api/car`
 - A list of all cars and their respective IDs
@@ -135,7 +250,7 @@ For a User ID:
   "licence": null
 }
 ```
-### Get one office by id
+### Get one car by id
 ###### Package into JSON
 `get api/car/id`
 - An car of given id or 404 not found message if office doesn't exist
@@ -197,12 +312,12 @@ For a User ID:
 }
 ```
 
-### delete car
+### Delete car
 ###### Package into JSON
 `delete api/car/id`
 - returns status OK if office was successfully deleted
 
-### update car
+### Update car
 ###### Package into JSON
 `put api/office`
 - car sent in json must have id param.
@@ -253,30 +368,115 @@ For a User ID:
 
 `get api/car/carByOffice/location/functional`
 - returns only functional cars from location given by location
-### ModifyRent
-##### Accepts Request Parameters to Add or Remove Rented Car Data.
-Example request parameters:
-```json
-"car_id": 12
-"rent_from": "25-08-2001"
-"rent_to": "11-09-2001"
-"action": "add" # Can be either add, remove or modify.
-```
-###### Package into JSON
-Response would be:
+
+
+## Rental
+### Get all rentals
+get /api/rental
+
+### Get all rentals by client's id
+get /api/rental/client/{id}
+
+### Get rental by id
+get /api/rental/{id}
+
+### Add rental
+post /api/rental
+
+To specify destination and origin offices use _destinationOfficeId_ and _originOfficeId_ fields respectively.
+Fields _destinationOffice_ and _originOffice_ are **used only to return values**.
+(the difference is _id_ at the end)
+ 
+##### Request
 ```json
 {
-	"status": "OK",
-	"error": ""
+    "carId": 4,
+    "clientId": 1,
+    "originOfficeId": 8,
+    "destinationOfficeId": 6,
+    "protocolNumber": 420420420,
+    "startDate": "2024-02-09",
+    "endDate": "2024-02-11",
+    "additions": [
+        "ADDITION_DECORATION",
+        "ADDITION_DELIVERY",
+        "ADDITION_INSURANCE"
+    ]
 }
 ```
-Or:
+
+##### Response
 ```json
 {
-	"status": "Error!",
-	"error": "java.lang.NullPointerException" // Either the exception name or the error message
+    "id": 2,
+    "carId": 4,
+    "clientId": 1,
+    "originOffice": {
+        "id": 8,
+        "location": "Kingdom of Halemba"
+    },
+    "destinationOffice": {
+        "id": 6,
+        "location": "Chebzie :<"
+    },
+    "protocolNumber": 420420420,
+    "startDate": "2024-02-09",
+    "endDate": "2024-02-11",
+    "additions": [
+        "ADDITION_DECORATION",
+        "ADDITION_DELIVERY",
+        "ADDITION_INSURANCE"
+    ]
 }
 ```
+
+### Modify rental
+put /api/rental
+
+To specify destination and origin offices use _destinationOfficeId_ and _originOfficeId_ fields respectively.
+Fields _destinationOffice_ and _originOffice_ are **used only to return values**.
+(the difference is _id_ at the end)
+
+##### Request
+```json
+{
+    "id": 1,
+    "protocolNumber": 4,
+    "originOfficeId": 6,
+    "destinationOfficeId": 5,
+    "additions": [
+        "ADDITION_DECORATION",
+        "ADDITION_INSURANCE"
+    ]
+}
+```
+##### Response
+```json
+{
+    "id": 1,
+    "carId": 5,
+    "clientId": 1,
+    "originOffice": {
+        "id": 6,
+        "location": "Chebzie :<"
+    },
+    "destinationOffice": {
+        "id": 5,
+        "location": "Bytom"
+    },
+    "protocolNumber": 4,
+    "startDate": "2024-02-11",
+    "endDate": "2024-02-11",
+    "additions": [
+        "ADDITION_DECORATION",
+        "ADDITION_INSURANCE"
+    ]
+}
+```
+
+### Delete rental by id
+delete /api/rental/{id}
+
 ### Statistics
 ###### Package into JSON
 Variables:
@@ -303,21 +503,97 @@ Variables:
 }
 ```
 ## Client
-### Client Details
-For the currently signed in client (owner of the token)
+### Get client details
+Get information about currently signed in Client
+get /client/details
 ```json
 {
-	"first_name": "Jan",
-	"last_name": "Kowalski",
-	"is_company": false,
-	"licenses":[
-		{
-		"number":123453252,
-		"expiration_date": "11-11-2026",
-		"category": "B"
-		}
-	]
+    "id": 2,
+    "username": "goodman",
+    "email": "goodman@gmail.com",
+    "name": "Jimmy",
+    "lastName": "McGill",
+    "companyInfo": null,
+    "licenses": []
 }
+```
+### Get all clients
+get /client
+```json
+[
+    {
+        "id": 1,
+        "username": "kielich420",
+        "email": "kielich@gmail.com",
+        "name": "Mateusz",
+        "lastName": "Kieliszkowski",
+        "companyInfo": {
+            "name": "Budex Sp. z.o.o.",
+            "nip": 123456789
+        },
+        "licenses": [
+            {
+                "id": 1,
+                "licenseCategory": "B",
+                "licenseNumber": 123458,
+                "expirationDate": "2024-12-12"
+            },
+            {
+                "id": 3,
+                "licenseCategory": "A",
+                "licenseNumber": 1312420,
+                "expirationDate": "2030-01-01"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "username": "goodman",
+        "email": "goodman@gmail.com",
+        "name": "Jimmy",
+        "lastName": "McGill",
+        "companyInfo": null,
+        "licenses": []
+    }
+]
+```
+### Get client by id
+get /client/{id}
 
+Response like above
+
+### Delete client by id
+delete /client/{id}
+
+### Modify client
+put /client
+
+#### Request:
+Client's id is required, chooses which client to modify.
+To add new license do not specify its id, to modify existing license it is requierd to specify its id.
+```json
+{
+    "id": 1,	// requierd - chooses client to modify
+    "companyInfo": {
+        "name": "Budex Sp. z.o.o.",
+        "nip": 123456789
+    },
+    "licenses": [
+        {
+            "id": 1,
+            "clientId": 1,
+            "licenseCategory": "B",
+            "licenseNumber": 123458,
+            "expirationDate": "2024-12-12"
+        },
+        {
+            "clientId": 1,
+            "licenseCategory": "A",
+            "licenseNumber": "1312420",
+            "expirationDate": "2030-01-01"
+        }
+    ]
+}
 ```
 
+In response returns modified client (all fields).
