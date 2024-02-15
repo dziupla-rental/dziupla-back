@@ -91,7 +91,7 @@ public class CarDTO {
 
     public String getType() { return carType; }
 
-    public void setType(String type) { this.carType = carType; }
+    public void setType(String cartype) { this.carType = carType; }
 
     public String getFuelType() { return fuelType; }
 
