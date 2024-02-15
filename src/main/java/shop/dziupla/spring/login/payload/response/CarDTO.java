@@ -103,6 +103,6 @@ public class CarDTO {
 
     public String getPhotoURL() { return photoURL; }
 
-    public void setPhotoURL(String photo) { this.photoURL = photoURL; }
+    public void setPhotoURL(String photoURL) { this.photoURL = photoURL; }
 
 }
