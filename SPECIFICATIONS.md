@@ -369,6 +369,44 @@ Response would be:
 `get api/car/carByOffice/location/functional`
 - returns only functional cars from location given by location
 
+## Photo
+### Get all photos
+get /api/photo
+### Get photo by id
+get /api/photo/{id}
+
+### Add photo
+post /api/photo
+- Give the url
+
+##### Request
+```json
+{
+  "url":"imgSRC"
+}
+```
+### Modify photo
+put /api/photo
+
+-Give both the url and the ID
+
+##### Request
+```json
+{
+    "id": 1,
+    "url": "newSRC"
+}
+```
+##### Response
+```json
+{
+  "id": 1,
+  "url": "newSRC"
+}
+```
+
+### Delete photo by id
+delete /api/photo/{id}
 
 ## Rental
 ### Get all rentals
