@@ -1,11 +1,6 @@
 package shop.dziupla.spring.login.payload.response;
 
 //import shop.dziupla.spring.login.models.*;
-import shop.dziupla.spring.login.models.DAO.Office;
-import shop.dziupla.spring.login.models.DAO.Photo;
-import shop.dziupla.spring.login.models.Enums.ECarType;
-import shop.dziupla.spring.login.models.Enums.EDriverLicenseCategory;
-import shop.dziupla.spring.login.models.Enums.EFuelType;
 
 public class CarDTO {
 
