@@ -2,13 +2,11 @@ package shop.dziupla.spring.login.controllers;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.OptimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.dziupla.spring.login.payload.response.CarDTO;
-import shop.dziupla.spring.login.payload.response.OfficeDTO;
 import shop.dziupla.spring.login.security.services.CarService;
 
 import java.util.List;

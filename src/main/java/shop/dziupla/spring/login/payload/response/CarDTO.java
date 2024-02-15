@@ -42,7 +42,9 @@ public class CarDTO {
     public CarDTO() {
     }
 
-    private String photo;
+    private PhotoDTO photo;
+
+    private String photoURL;
 
     public Long getId() {
         return id;
@@ -100,8 +102,12 @@ public class CarDTO {
 
     public void setFuelType(String fuelType) { this.fuelType = fuelType; }
 
-    public String getPhoto() { return photo; }
+    public PhotoDTO getPhoto() { return photo; }
 
-    public void setPhoto(String photo) { this.photo = photo; }
+    public void setPhoto(PhotoDTO photo) { this.photo = photo; }
+
+    public String getPhotoURL() { return photoURL; }
+
+    public void setPhotoURL(String photo) { this.photoURL = photoURL; }
 
 }

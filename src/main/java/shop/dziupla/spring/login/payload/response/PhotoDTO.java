@@ -1,26 +1,20 @@
-package shop.dziupla.spring.login.models.DAO;
+package shop.dziupla.spring.login.payload.response;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import shop.dziupla.spring.login.models.DAO.Car;
 
-@Entity
-@Table(name = "photos")
-public class Photo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PhotoDTO {
     private Long id;
 
-   // @NotBlank
-    @Size(max = 200)
     private String url;
 
 
-    public Photo() {
+    public PhotoDTO() {
 
     }
-    public Photo(String url) {
+    public PhotoDTO(String url) {
         this.url = url;
     }
     public Long getId() {

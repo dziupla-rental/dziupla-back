@@ -12,6 +12,7 @@ import shop.dziupla.spring.login.payload.response.EmployeeDTO;
 import shop.dziupla.spring.login.payload.response.OfficeDTO;
 import shop.dziupla.spring.login.repository.CarRepository;
 import shop.dziupla.spring.login.repository.OfficeRepository;
+import shop.dziupla.spring.login.repository.PhotoRepository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -14,26 +14,26 @@ import shop.dziupla.spring.login.security.services.OfficeService;
 @Mapper(componentModel = "spring")
 public abstract class CarMapper {
     @Autowired
-    PhotoRepository photoRepository;
+    PhotoRepository photoService;
     @Autowired
     OfficeService officeService;
-    @Mapping(target = "photo", source = "photo.url")
+    @Mapping(target = "photoURL", source = "photo.url")
     //@Mapping(target = "office")
     public abstract CarDTO carToCarDTO(Car car);
-    @Mapping(target = "photo", source = "photo", qualifiedByName = "getPhotoByUrl")
+    @Mapping(target = "photo", source = "photoURL", qualifiedByName = "getPhotoByUrl")
     @Mapping(target = "office", source = "officeId", qualifiedByName = "getOfficeById")
     public abstract Car carDTOToCar(CarDTO carDTO);
     @Named("getPhotoByUrl")
-    Photo getPhotoByUrl(String photo){
+    Photo getPhotoByUrl(String photoURL){
         try{
-            return photoRepository.getPhotoByUrl(photo);
+            return photoService.getPhotoByUrl(photoURL);
         }
         catch(Exception e){
             return null;
         }
     }
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "photo", source = "photo", qualifiedByName = "getPhotoByUrl")
+    @Mapping(target = "photo", source = "photoURL", qualifiedByName = "getPhotoByUrl")
     @Mapping(target = "office", source = "officeId", qualifiedByName = "getOfficeById")
     public abstract void updateCarFromDTO(CarDTO carDTO, @MappingTarget Car car);
 
