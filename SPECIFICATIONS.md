@@ -435,11 +435,11 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
     "protocolNumber": 420420420,
     "startDate": "2024-02-09",
     "endDate": "2024-02-11",
-    "additions": [
-        "ADDITION_DECORATION",
-        "ADDITION_DELIVERY",
-        "ADDITION_INSURANCE"
-    ]
+    "additions": {
+        "ADDITION_DELIVERY": "pod dom",
+        "ADDITION_INSURANCE": "OC w axa pan tez cwiczy",
+        "ADDITION_DECORATION": "okleina"
+    }
 }
 ```
 
@@ -460,11 +460,12 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
     "protocolNumber": 420420420,
     "startDate": "2024-02-09",
     "endDate": "2024-02-11",
-    "additions": [
-        "ADDITION_DECORATION",
-        "ADDITION_DELIVERY",
-        "ADDITION_INSURANCE"
-    ]
+    "additions": {
+        "ADDITION_DELIVERY": "pod dom",
+        "ADDITION_INSURANCE": "OC w axa pan tez cwiczy",
+        "ADDITION_DECORATION": "okleina"
+    },
+    "cost": 950.4
 }
 ```
 
@@ -472,8 +473,8 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
 put /api/rental
 
 To specify destination and origin offices use _destinationOfficeId_ and _originOfficeId_ fields respectively.
-Fields _destinationOffice_ and _originOffice_ are **used only to return values**.
-(the difference is _id_ at the end)
+Fields _destinationOffice_ and _originOffice_ are **used only to return values**. (the difference is _id_ at the end)
+Only specifed additons are preserved in database, so in order to add new addition you also have to specify old ones. To delete addition just don't specify it.
 
 ##### Request
 ```json
@@ -482,10 +483,10 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
     "protocolNumber": 4,
     "originOfficeId": 6,
     "destinationOfficeId": 5,
-    "additions": [
-        "ADDITION_DECORATION",
-        "ADDITION_INSURANCE"
-    ]
+    "additions": {
+        "ADDITION_DECORATION": "okleina",
+        "ADDITION_INSURANCE": "OC w axa pan tez cwiczy"
+    }
 }
 ```
 ##### Response
