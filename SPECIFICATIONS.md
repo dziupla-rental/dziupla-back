@@ -31,7 +31,6 @@ if you want to create new user provide names in brackets (in JSON)
 `get api/employee`
 - A list of all Employees and their respective IDs
 ```json
-{
 [
    {
     "id": 4,
@@ -49,7 +48,6 @@ if you want to create new user provide names in brackets (in JSON)
     "role": "ROLE_EMPLOYEE_HR"
 }
 ]
-}
 ```
 
 ### Employee
