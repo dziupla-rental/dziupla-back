@@ -1,9 +1,11 @@
 package shop.dziupla.spring.login.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import shop.dziupla.spring.login.models.Enums.EAddition;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class RentalDTO {
     private Long id;
@@ -14,18 +16,18 @@ public class RentalDTO {
     private Long protocolNumber;
     private LocalDate startDate;
     private LocalDate endDate;
-    private List<String> additions;
+    private Map<String, String> additions;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long originOfficeId;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long destinationOfficeId;
-
     private Float cost;
+
     public RentalDTO() { }
 
     @Default
     public RentalDTO(Long id, Long carId, Long clientId, OfficeDTO originOffice, OfficeDTO destinationOffice,
-                     Long protocolNumber, LocalDate startDate, LocalDate endDate, List<String> additions,
+                     Long protocolNumber, LocalDate startDate, LocalDate endDate, Map<String, String> additions,
                      Long originOfficeId, Long destinationOfficeId) {
         this.id = id;
         this.carId = carId;
@@ -64,8 +66,8 @@ public class RentalDTO {
     public LocalDate getEndDate() { return endDate; }
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
 
-    public List<String> getAdditions() { return additions; }
-    public void setAdditions(List<String> additions) { this.additions = additions; }
+    public Map<String, String> getAdditions() { return additions; }
+    public void setAdditions(Map<String, String> additions) { this.additions = additions; }
 
     public Long getOriginOfficeId() { return originOfficeId; }
     public void setOriginOfficeId(Long id) { this.originOfficeId = id; }
