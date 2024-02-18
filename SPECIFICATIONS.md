@@ -56,7 +56,7 @@ if you want to create new user provide names in brackets (in JSON)
 
 For a provided Employee ID:
 ```json
-{
+
     {
     "id": 4,
     "office": {
@@ -72,7 +72,7 @@ For a provided Employee ID:
     "lastName": "wasil",
     "role": "ROLE_EMPLOYEE_HR"
 }
-}
+
 ```
 ### DeleteEmployee
 `delete api/employee/id`

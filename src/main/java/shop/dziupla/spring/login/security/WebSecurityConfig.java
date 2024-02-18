@@ -1,6 +1,5 @@
 package shop.dziupla.spring.login.security;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -86,19 +85,21 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/auth/signup/**").permitAll()
                                 .requestMatchers("/api/employee").permitAll()
                                 .requestMatchers("/api/employee/**").permitAll()
                                 .requestMatchers("/api/rental/**").permitAll()
                                 .requestMatchers("/api/rental").permitAll()
                                 .requestMatchers("/api/car/**").permitAll()
                                 .requestMatchers("/api/car").permitAll()
-                                .requestMatchers("/api/office/**").permitAll()
-                                .requestMatchers("/api/office").permitAll()
                                 .requestMatchers("/api/statistics/**").permitAll()
                                 .requestMatchers("/api/statistics").permitAll()
+                                .requestMatchers("/api/office").permitAll()
+                                .requestMatchers("/api/office/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll() //TODO this one is not needed, remove it when TestController is removed
+                                .requestMatchers("/api/client/").permitAll()
                                 .requestMatchers("/api/client/**").permitAll()
+                                .requestMatchers("/api/office/").permitAll()
+                                .requestMatchers("/api/office/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 
@@ -107,9 +108,5 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
     }
 }
