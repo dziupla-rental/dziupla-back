@@ -1,11 +1,6 @@
 package shop.dziupla.spring.login.payload.response;
 
 //import shop.dziupla.spring.login.models.*;
-import shop.dziupla.spring.login.models.DAO.Office;
-import shop.dziupla.spring.login.models.DAO.Photo;
-import shop.dziupla.spring.login.models.Enums.ECarType;
-import shop.dziupla.spring.login.models.Enums.EDriverLicenseCategory;
-import shop.dziupla.spring.login.models.Enums.EFuelType;
 
 public class CarDTO {
 
@@ -17,7 +12,7 @@ public class CarDTO {
 
     private int insuranceNumber;
 
-    private boolean available;
+    //private boolean available;
 
 
     private String licenceCategory;
@@ -42,7 +37,9 @@ public class CarDTO {
     public CarDTO() {
     }
 
-    private String photo;
+    private PhotoDTO photo;
+
+    private String photoURL;
 
     public Long getId() {
         return id;
@@ -64,9 +61,9 @@ public class CarDTO {
 
     public void setInsuranceNumber(int insuranceNumber) { this.insuranceNumber = insuranceNumber; }
 
-    public boolean isAvailable() { return available; }
+   // public boolean isAvailable() { return available; }
 
-    public void setAvailable(boolean available) { this.available = available; }
+    //public void setAvailable(boolean available) { this.available = available; }
 
     public String getLicence() { return licenceCategory; }
 
@@ -94,14 +91,18 @@ public class CarDTO {
 
     public String getType() { return carType; }
 
-    public void setType(String type) { this.carType = carType; }
+    public void setType(String carType) { this.carType = carType; }
 
     public String getFuelType() { return fuelType; }
 
     public void setFuelType(String fuelType) { this.fuelType = fuelType; }
 
-    public String getPhoto() { return photo; }
+    public PhotoDTO getPhoto() { return photo; }
 
-    public void setPhoto(String photo) { this.photo = photo; }
+    public void setPhoto(PhotoDTO photo) { this.photo = photo; }
+
+    public String getPhotoURL() { return photoURL; }
+
+    public void setPhotoURL(String photoURL) { this.photoURL = photoURL; }
 
 }

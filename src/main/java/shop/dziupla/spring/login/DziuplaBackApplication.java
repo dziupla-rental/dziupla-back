@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 import shop.dziupla.spring.login.mappers.ClientMapper;
+import shop.dziupla.spring.login.models.DAO.Role;
+import shop.dziupla.spring.login.models.Enums.ERole;
 import shop.dziupla.spring.login.repository.*;
 import shop.dziupla.spring.login.security.services.EmployeeService;
 
@@ -25,7 +27,7 @@ public class DziuplaBackApplication  implements CommandLineRunner {
 	@Autowired
 	EmployeeService service;
 	@Autowired
-	RoleRepository roleRepository;
+	RoleRepository rr;
 	@Autowired
 	DriverLicenseRepository driverLicenseRepository;
 	@Autowired
@@ -99,11 +101,11 @@ public class DziuplaBackApplication  implements CommandLineRunner {
 		//client.setCompanyInfo(companyInfo);
 		//clientRepository.save(client);
 
-//		rr.save(new Role(ERole.ROLE_EMPLOYEE));
-        //rr.save(new Role(ERole.ROLE_USER));
-//        rr.save(new Role(ERole.ROLE_ADMIN));
-//        rr.save(new Role(ERole.ROLE_EMPLOYEE_HR));
-//        rr.save(new Role(ERole.ROLE_EMPLOYEE_MECHANIC));
+		rr.save(new Role(ERole.ROLE_EMPLOYEE));
+        rr.save(new Role(ERole.ROLE_USER));
+        rr.save(new Role(ERole.ROLE_ADMIN));
+        rr.save(new Role(ERole.ROLE_EMPLOYEE_HR));
+        rr.save(new Role(ERole.ROLE_EMPLOYEE_MECHANIC));
 
 		//CompanyInfo companyInfo = new CompanyInfo("firma2", 22241232);
 		//companyInfoRepository.save(companyInfo);

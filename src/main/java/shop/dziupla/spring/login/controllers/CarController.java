@@ -2,15 +2,12 @@ package shop.dziupla.spring.login.controllers;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.OptimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.dziupla.spring.login.payload.response.CarDTO;
-import shop.dziupla.spring.login.payload.response.OfficeDTO;
 import shop.dziupla.spring.login.security.services.CarService;
-import shop.dziupla.spring.login.security.services.RentalService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,9 +19,6 @@ import java.util.List;
 public class CarController {
     @Autowired
     CarService service;
-    @Autowired
-    RentalService rentalService;
-
     // TODO autoryzacja wybranyuch ról
     // TODO podpięcie do modelu danych
     @GetMapping("")
@@ -42,6 +36,21 @@ public class CarController {
         catch (EntityNotFoundException enfe){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/carByDate")
+    public ResponseEntity<List<CarDTO>> getAvailableByDateAndLocation(@RequestParam List<String> params){
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            return new ResponseEntity<>(service.getAvailableByDateAndLocation(Long.valueOf(params.get(0)), LocalDate.parse(params.get(1), formatter), LocalDate.parse(params.get(2), formatter)), HttpStatus.OK);
+        }
+        catch( NullPointerException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch(EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PostMapping("")
@@ -85,19 +94,50 @@ public class CarController {
             return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         }
     }
+    ////////////////////SERVICED////////////
+    @GetMapping("/service")
+    public ResponseEntity<List<CarDTO>> getServicedCars() {
+        return service.getServicedCars().isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+            :new ResponseEntity<>(service.getServicedCars(), HttpStatus.OK);
 
-    @GetMapping("/available/{id}")
-    public ResponseEntity<Boolean> isCarAvailableById(@PathVariable("id") Long id, @RequestParam(name = "date") String sDate) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-            LocalDate date = LocalDate.parse(sDate, formatter);
-            return new ResponseEntity<>(rentalService.isCarAvailable(id, date), HttpStatus.OK);
-        }
-        catch (NullPointerException | IllegalArgumentException ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        catch (EntityNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    }
+    ////////////////////FUNCTIONAL//////////
+    @GetMapping("/functional")
+    public ResponseEntity<List<CarDTO>> getFunctionalCars() {
+        return service.getFunctionalCars().isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                :new ResponseEntity<>(service.getFunctionalCars(), HttpStatus.OK);
+
+    }
+    /////////////////BY//OFFICE//ID/////////
+    @GetMapping("/carByOfficeId/{id}")
+    public ResponseEntity<List<CarDTO>> getCarsByOfficeId(@PathVariable("id") Long id) {
+        return service.getCarsByOffice(id).isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                :new ResponseEntity<>(service.getCarsByOffice(id), HttpStatus.OK);
+
+    }
+    /////////////////BY//OFFICE//STRING/////
+    @GetMapping("/carByOffice/{office}")
+    public ResponseEntity<List<CarDTO>> getCarsByOffice(@PathVariable("office") String office) {
+        return service.getCarsByOffice(office).isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                :new ResponseEntity<>(service.getCarsByOffice(office), HttpStatus.OK);
+
+    }
+    @GetMapping("/carByOffice/{office}/functional")
+    public ResponseEntity<List<CarDTO>> getCarsDoubleFiltered(@PathVariable("office") String office) {
+        return service.getCarsDoubleFiltered(office).isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                :new ResponseEntity<>(service.getCarsDoubleFiltered(office), HttpStatus.OK);
+
+    }
+    @GetMapping("/carByOfficeId/{id}/functional")
+    public ResponseEntity<List<CarDTO>> getCarsDoubleFilteredId(@PathVariable("id") Long id) {
+        return service.getCarsDoubleFilteredId(id).isEmpty()?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                :new ResponseEntity<>(service.getCarsDoubleFilteredId(id), HttpStatus.OK);
+
     }
 }

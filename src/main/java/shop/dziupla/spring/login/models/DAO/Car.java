@@ -25,8 +25,8 @@ public class Car {
     @NotNull
     private int insuranceNumber;
 
-    @NotNull
-    private boolean available;
+    //@NotNull
+    //private boolean available;
 
 
     @Enumerated(EnumType.STRING)
@@ -73,7 +73,7 @@ public class Car {
        this.fuelType = fuelType;
        this.insuranceNumber = insuranceNumber;
        this.licenceCategory = licenceCategory;
-       this.available = true;
+       //this.available = true;
        this.model = model;
        this.seatNumber = seatNumber;
        this.technicalStatus = true;
@@ -101,9 +101,9 @@ public class Car {
 
     public void setInsuranceNumber(int insuranceNumber) { this.insuranceNumber = insuranceNumber; }
 
-    public boolean isAvailable() { return available; }
+   // public boolean isAvailable() { return available; }
 
-    public void setAvailable(boolean available) { this.available = available; }
+    //public void setAvailable(boolean available) { this.available = available; }
 
     public EDriverLicenseCategory getLicence() { return licenceCategory; }
 

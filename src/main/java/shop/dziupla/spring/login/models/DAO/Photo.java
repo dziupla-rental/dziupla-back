@@ -1,19 +1,17 @@
 package shop.dziupla.spring.login.models.DAO;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import shop.dziupla.spring.login.models.DAO.Car;
 
 @Entity
 @Table(name = "photos")
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @NotBlank
-    @Size(max = 100)
+   // @NotBlank
+    @Size(max = 200)
     private String url;
 
 
@@ -23,11 +21,11 @@ public class Photo {
     public Photo(String url) {
         this.url = url;
     }
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
