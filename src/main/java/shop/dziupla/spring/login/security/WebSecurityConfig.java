@@ -88,6 +88,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                                 .requestMatchers("/api/employee").permitAll()
                                 .requestMatchers("/api/employee/**").permitAll()
                                 .requestMatchers("/api/rental/**").permitAll()
+                                .requestMatchers("/api/rental").permitAll()
                                 .requestMatchers("/api/car/**").permitAll()
                                 .requestMatchers("/api/car").permitAll()
                                 .requestMatchers("/api/car/service/**").permitAll()
@@ -101,10 +102,14 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                                 .requestMatchers("/api/photo/**").permitAll()
                                 .requestMatchers("/api/photo").permitAll()
                                 .requestMatchers("/api/statistics/**").permitAll()
+                                .requestMatchers("/api/statistics").permitAll()
                                 .requestMatchers("/api/office").permitAll()
                                 .requestMatchers("/api/office/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll() //TODO this one is not needed, remove it when TestController is removed
+                                .requestMatchers("/api/client/").permitAll()
                                 .requestMatchers("/api/client/**").permitAll()
+                                .requestMatchers("/api/office/").permitAll()
+                                .requestMatchers("/api/office/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 

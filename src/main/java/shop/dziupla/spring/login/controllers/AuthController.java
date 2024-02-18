@@ -17,12 +17,15 @@ import shop.dziupla.spring.login.models.DAO.User;
 import shop.dziupla.spring.login.models.Enums.ERole;
 import shop.dziupla.spring.login.payload.request.LoginRequest;
 import shop.dziupla.spring.login.payload.request.SignupRequest;
+import shop.dziupla.spring.login.payload.response.ClientDTO;
 import shop.dziupla.spring.login.payload.response.EmployeeDTO;
 import shop.dziupla.spring.login.payload.response.MessageResponse;
 import shop.dziupla.spring.login.payload.response.UserDTO;
+import shop.dziupla.spring.login.repository.ClientRepository;
 import shop.dziupla.spring.login.repository.RoleRepository;
 import shop.dziupla.spring.login.repository.UserRepository;
 import shop.dziupla.spring.login.security.jwt.JwtUtils;
+import shop.dziupla.spring.login.security.services.ClientService;
 import shop.dziupla.spring.login.security.services.EmployeeService;
 import shop.dziupla.spring.login.security.services.UserDetailsImpl;
 
@@ -52,6 +55,9 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    ClientService clientService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -95,11 +101,19 @@ public class AuthController {
         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         user.setRole(userRole);
+
+        ClientDTO clientDTO = new ClientDTO();
+        clientDTO.setUser(user);
+        clientDTO.setCompanyInfo(null);
+
         userRepository.save(user);
+        clientService.addClient(clientDTO);
+
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
     @PostMapping("/signup/employee")
-    public ResponseEntity<?> registerEmployee(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<EmployeeDTO> registerEmployee(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername()) || userRepository.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -129,8 +143,14 @@ public class AuthController {
 
         EmployeeDTO employee = new EmployeeDTO();
         employee.setUser(user);
-        employeeService.addEmployee(employee);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            var result = employeeService.addEmployee(employee);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
     }
 
     @PostMapping("/signout")

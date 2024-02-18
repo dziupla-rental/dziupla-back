@@ -21,7 +21,7 @@ public enum ERole {
     ROLE_EMPLOYEE_HR, (empHR)
     
     ROLE_EMPLOYEE_MECHANIC (empMech)
-
+    
 }
 
 if you want to create new user provide names in brackets (in JSON)
@@ -31,7 +31,6 @@ if you want to create new user provide names in brackets (in JSON)
 `get api/employee`
 - A list of all Employees and their respective IDs
 ```json
-{
 [
    {
     "id": 4,
@@ -49,7 +48,6 @@ if you want to create new user provide names in brackets (in JSON)
     "role": "ROLE_EMPLOYEE_HR"
 }
 ]
-}
 ```
 
 ### Employee
@@ -58,7 +56,7 @@ if you want to create new user provide names in brackets (in JSON)
 
 For a provided Employee ID:
 ```json
-{
+
     {
     "id": 4,
     "office": {
@@ -74,7 +72,7 @@ For a provided Employee ID:
     "lastName": "wasil",
     "role": "ROLE_EMPLOYEE_HR"
 }
-}
+
 ```
 ### DeleteEmployee
 `delete api/employee/id`
@@ -205,7 +203,7 @@ Response would be:
 ###### Package into JSON
 `delete api/office/id`
 - returns status OK if office was successfully deleted
-
+  
 ### Update office
 ###### Package into JSON
 `put api/office`
@@ -407,6 +405,7 @@ put /api/photo
 
 ### Delete photo by id
 delete /api/photo/{id}
+
 ## Rental
 ### Get all rentals
 get /api/rental
@@ -423,7 +422,7 @@ post /api/rental
 To specify destination and origin offices use _destinationOfficeId_ and _originOfficeId_ fields respectively.
 Fields _destinationOffice_ and _originOffice_ are **used only to return values**.
 (the difference is _id_ at the end)
-
+ 
 ##### Request
 ```json
 {
@@ -434,11 +433,11 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
     "protocolNumber": 420420420,
     "startDate": "2024-02-09",
     "endDate": "2024-02-11",
-    "additions": [
-        "ADDITION_DECORATION",
-        "ADDITION_DELIVERY",
-        "ADDITION_INSURANCE"
-    ]
+    "additions": {
+        "ADDITION_DELIVERY": "pod dom",
+        "ADDITION_INSURANCE": "OC w axa pan tez cwiczy",
+        "ADDITION_DECORATION": "okleina"
+    }
 }
 ```
 
@@ -459,11 +458,12 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
     "protocolNumber": 420420420,
     "startDate": "2024-02-09",
     "endDate": "2024-02-11",
-    "additions": [
-        "ADDITION_DECORATION",
-        "ADDITION_DELIVERY",
-        "ADDITION_INSURANCE"
-    ]
+    "additions": {
+        "ADDITION_DELIVERY": "pod dom",
+        "ADDITION_INSURANCE": "OC w axa pan tez cwiczy",
+        "ADDITION_DECORATION": "okleina"
+    },
+    "cost": 950.4
 }
 ```
 
@@ -471,8 +471,8 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
 put /api/rental
 
 To specify destination and origin offices use _destinationOfficeId_ and _originOfficeId_ fields respectively.
-Fields _destinationOffice_ and _originOffice_ are **used only to return values**.
-(the difference is _id_ at the end)
+Fields _destinationOffice_ and _originOffice_ are **used only to return values**. (the difference is _id_ at the end)
+Only specifed additons are preserved in database, so in order to add new addition you also have to specify old ones. To delete addition just don't specify it.
 
 ##### Request
 ```json
@@ -481,10 +481,10 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
     "protocolNumber": 4,
     "originOfficeId": 6,
     "destinationOfficeId": 5,
-    "additions": [
-        "ADDITION_DECORATION",
-        "ADDITION_INSURANCE"
-    ]
+    "additions": {
+        "ADDITION_DECORATION": "okleina",
+        "ADDITION_INSURANCE": "OC w axa pan tez cwiczy"
+    }
 }
 ```
 ##### Response
@@ -515,28 +515,51 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
 delete /api/rental/{id}
 
 ### Statistics
+get /api/statistics
 ###### Package into JSON
 Variables:
 - Total cars
 - Cars that are rented
-- Cars that are in service
+- Cars that are in service, services cars are marked as available
 - Employees amount
 - Offices amount
 - Clients amount
-- Earnings statistics array (24 float numbers, most recent last, null if not present)
+- Earnings statistics array (24 float numbers, most recent last)
 ```json
-{
-	"cars_total": 68,
-	"cars_rented": 41,
-	"cars_service": 3,
-	"employees_total": 8,
-	"offices_total": 3,
-	"clients_total": 200,
-	"earnings_stats": [
-		121.3,
-		223.1,
-		421.1
-	]
+{	
+    "carCount": 1,
+    "rentedCars": 1,
+    "servicedCars": 0,
+    "availableCars": 0,
+    "clientCount": 1,
+    "officeCount": 3,
+    "employeeCount": 4,
+    "income": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1500.0,
+        0.0,
+        0.0,
+        1500.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        4200.0
+]
 }
 ```
 ## Client
