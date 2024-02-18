@@ -515,28 +515,51 @@ Only specifed additons are preserved in database, so in order to add new additio
 delete /api/rental/{id}
 
 ### Statistics
+get /api/statistics
 ###### Package into JSON
 Variables:
 - Total cars
 - Cars that are rented
-- Cars that are in service
+- Cars that are in service, services cars are marked as available
 - Employees amount
 - Offices amount
 - Clients amount
-- Earnings statistics array (24 float numbers, most recent last, null if not present)
+- Earnings statistics array (24 float numbers, most recent last)
 ```json
-{
-	"cars_total": 68,
-	"cars_rented": 41,
-	"cars_service": 3,
-	"employees_total": 8,
-	"offices_total": 3,
-	"clients_total": 200,
-	"earnings_stats": [
-		121.3,
-		223.1,
-		421.1
-	]
+{	
+    "carCount": 1,
+    "rentedCars": 1,
+    "servicedCars": 0,
+    "availableCars": 0,
+    "clientCount": 1,
+    "officeCount": 3,
+    "employeeCount": 4,
+    "income": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1500.0,
+        0.0,
+        0.0,
+        1500.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        4200.0
+]
 }
 ```
 ## Client
