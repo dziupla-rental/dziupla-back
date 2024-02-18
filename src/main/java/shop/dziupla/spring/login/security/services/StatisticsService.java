@@ -42,7 +42,9 @@ public class StatisticsService {
             var results = rentalRepository.getAllByEndDateBetween(date, date.plusMonths(1));
             Double value = 0.0;
             for(var  y : results){
-                if(y.getCost() != null) value += y.getCost();
+                if(y.getEndDate().getMonthValue() == date.getMonthValue()) {
+                    if (y.getCost() != null) value += y.getCost();
+                }
             }
             incomeList.add(value);
             date = date.plusMonths(1);
