@@ -12,7 +12,7 @@ public class CarDTO {
 
     private int insuranceNumber;
 
-    private boolean available;
+    //private boolean available;
 
 
     private String licenceCategory;
@@ -61,9 +61,9 @@ public class CarDTO {
 
     public void setInsuranceNumber(int insuranceNumber) { this.insuranceNumber = insuranceNumber; }
 
-    public boolean isAvailable() { return available; }
+   // public boolean isAvailable() { return available; }
 
-    public void setAvailable(boolean available) { this.available = available; }
+    //public void setAvailable(boolean available) { this.available = available; }
 
     public String getLicence() { return licenceCategory; }
 

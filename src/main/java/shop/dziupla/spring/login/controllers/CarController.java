@@ -36,6 +36,11 @@ public class CarController {
         }
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<CarDTO>> getAvailableByDateAndLocation(@RequestParam String officeId, @RequestParam String startDate, @RequestParam String endDate){
+        return null;
+    }
+
     @PostMapping("")
     public ResponseEntity<CarDTO> createCar(@RequestBody CarDTO car) {
         try{
