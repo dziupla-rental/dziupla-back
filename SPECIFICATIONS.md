@@ -1,5 +1,5 @@
 # Data Interface Specifications
-==All the requests will be sent with POST==
+
 ## Endpoints (Servlets)
 ### Login
 The login will be implemented according to the instructions:
@@ -31,7 +31,6 @@ if you want to create new user provide names in brackets (in JSON)
 `get api/employee`
 - A list of all Employees and their respective IDs
 ```json
-{
 [
    {
     "id": 4,
@@ -49,7 +48,6 @@ if you want to create new user provide names in brackets (in JSON)
     "role": "ROLE_EMPLOYEE_HR"
 }
 ]
-}
 ```
 
 ### Employee
@@ -58,7 +56,7 @@ if you want to create new user provide names in brackets (in JSON)
 
 For a provided Employee ID:
 ```json
-{
+
     {
     "id": 4,
     "office": {
@@ -74,7 +72,7 @@ For a provided Employee ID:
     "lastName": "wasil",
     "role": "ROLE_EMPLOYEE_HR"
 }
-}
+
 ```
 ### DeleteEmployee
 `delete api/employee/id`
@@ -130,7 +128,6 @@ Example request parameters:
     "shiftEnd": "16:00:00"
 }
 ```
-
 ###### Package into JSON
 Response would be:
 ```json
@@ -202,12 +199,12 @@ Response would be:
 }
 ```
 
-### delete office
+### Delete office
 ###### Package into JSON
 `delete api/office/id`
 - returns status OK if office was successfully deleted
   
-### update office
+### Update office
 ###### Package into JSON
 `put api/office`
 - office sent in json must have id param, you can't change location to a location that already exists
@@ -225,105 +222,194 @@ Response would be:
 }
 ```  
 
-### Cars List
-request formatted thusly:
-```json
-{
-	"office": "Warszawa",
-	"available_start": "12-05-2024",
-	"available_end": "18-05-2024"
-}
-```
-##### Package into JSON
-For a certain date and office locatio (Supplied in the request):
-
-- Car types list
-- Fuel types list
-- Cars list
-
-An example response object:
-```json
-{
-	"car_types": [
-	"hatchback",
-	"sedan"
-	],
-	"fuel_types": [
-	"electric",
-	"petrol"
-	],
-	"cars": [
-	{},
-	{}
-	]
-}
-```
-
-An example of a "Car" object:
-```json
-{
-	"model": "Toyota Corolla",
-	"id": 123,
-	"type": "hatchback",
-	"cost": 50.4,
-	"deposit": 200.1,
-	"availability": true, // Has to be the availability for the date frame in the request
-	"seat_number": 4,
-	"fuel_type": 1,
-	"image_url": "https://i.imgur.com/P74meQD.png",
-	"office": "Gliwice"
-}
-```
-
-### Car
-##### Package into JSON
-For a certain car id (Supplied in the request):
-An example of a "Car" object:
-```json
-{
-	"model": "Toyota Corolla",
-	"id": 123,
-	"type": "hatchback",
-	"cost": 50.4,
-	"deposit": 200.1,
-	"availability": true, // Has to be the availability for the date in the request
-	"seat_number": 4,
-	"fuel_type": 1,
-	"image_url": "https://i.imgur.com/P74meQD.png",
-	"office": "Gliwice"
-}
-```
-
-### ModifyCar
-##### Accepts Request Parameters to Add, Modify or Remove Car Data.
-Example request parameters:
-```json
-"model": "Toyota Corolla"
-"id": 123,
-"type": "sedan" # Zmienione dane
-"cost": 50.4
-"deposit": 200.1
-"seat_number": 4
-"fuel_type": "petrol"
-"image_url": "https://i.imgur.com/P74meQD.png"
-"office": "Gliwice"
-"action": "add" # Can be either add, remove or modify. If remove, no other parameters than the ID are necessary.
-```
+## Car
+### Get all cars
 ###### Package into JSON
-Response would be:
+`get api/car`
+- A list of all cars and their respective IDs
 ```json
 {
-	"status": "OK",
-	"error": ""
+  "id": 16,
+  "cost": 21.37,
+  "deposit": 8.9,
+  "insuranceNumber": 1,
+  "available": true,
+  "model": "szympki",
+  "office": {
+    "id": 1,
+    "location": "Nowy Sacz"
+  },
+  "officeId": null,
+  "seatNumber": 1,
+  "technicalStatus": false,
+  "fuelType": null,
+  "photo": null,
+  "type": null,
+  "licence": null
 }
 ```
-Or:
+### Get one car by id
+###### Package into JSON
+`get api/car/id`
+- An car of given id or 404 not found message if office doesn't exist
 ```json
 {
-	"status": "Error!",
-	"error": "java.lang.NullPointerException" // Either the exception name or the error message
+  "id": 16,
+  "cost": 21.37,
+  "deposit": 8.9,
+  "insuranceNumber": 1,
+  "available": true,
+  "model": "szympki",
+  "office": {
+    "id": 1,
+    "location": "Nowy Sacz"
+  },
+  "officeId": null,
+  "seatNumber": 1,
+  "technicalStatus": false,
+  "fuelType": null,
+  "photo": null,
+  "type": null,
+  "licence": null
 }
 ```
+### Create car
+###### Package into JSON
+`post api/car`
+- All paremeters except officeId, photo, fuleType, type and license must not be blank.
+```json
+{
+  "cost":21.37,
+  "deposit": 8.9,
+  "insuranceNumber":1,
+  "available":true,
+  "model":"szympki",
+  "seatNumber":1,
+  "technicalStatus":false
+}
+```
+- response would be
+```json
+{
+
+  "id": 17,
+  "cost": 21.37,
+  "deposit": 8.9,
+  "insuranceNumber": 1,
+  "available": true,
+  "model": "szympki",
+  "office": null,
+  "officeId": null,
+  "seatNumber": 1,
+  "technicalStatus": false,
+  "fuelType": null,
+  "photo": null,
+  "type": null,
+  "licence": null
+
+}
+```
+
+### Delete car
+###### Package into JSON
+`delete api/car/id`
+- returns status OK if office was successfully deleted
+
+### Update car
+###### Package into JSON
+`put api/office`
+- car sent in json must have id param.
+ ```json
+{
+  "id": 12,
+  "cost": 11.22,
+  "model": "Accent"
+}
+```
+- in reponse you get udpated car
+ ```json
+ {
+  "id": 12,
+  "cost": 11.22,
+  "deposit": 0.0,
+  "insuranceNumber": 0,
+  "available": false,
+  "model": "Accent",
+  "office": {
+    "id": 1,
+    "location": "Nowy Sacz"
+  },
+  "officeId": null,
+  "seatNumber": 0,
+  "technicalStatus": false,
+  "fuelType": null,
+  "photo": null,
+  "type": null,
+  "licence": null
+}
+```
+### Filter cars
+`get api/car/service`
+- returns list of all cars in service (unavailable)
+
+`get api/car/functionalCar`
+- returns list of all cars ready to rent
+
+`get api/car/carByOffice/location`
+- returns list of all cars in office given by location
+
+`get api/car/carByOfficeId/id`
+- returns list of all cars in office given by id
+
+`get api/car/carByOfficeId/id/functional`
+- returns only functional cars from office given by id
+
+`get api/car/carByOffice/location/functional`
+- returns only functional cars from location given by location
+
+`get api/car/carByDate?params=1&params=16-12-2023&params=24-12-2023`
+- filter by date, returns list of available cars in chosen location
+  
+
+## Photo
+### Get all photos
+get /api/photo
+### Get photo by id
+get /api/photo/{id}
+
+### Add photo
+post /api/photo
+- Give the url
+
+##### Request
+```json
+{
+  "url":"imgSRC"
+}
+```
+### Modify photo
+put /api/photo
+
+-Give both the url and the ID
+
+##### Request
+```json
+{
+    "id": 1,
+    "url": "newSRC"
+}
+```
+##### Response
+```json
+{
+  "id": 1,
+  "url": "newSRC"
+}
+```
+
+### Delete photo by id
+delete /api/photo/{id}
+
 ## Rental
 ### Get all rentals
 get /api/rental
@@ -351,11 +437,11 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
     "protocolNumber": 420420420,
     "startDate": "2024-02-09",
     "endDate": "2024-02-11",
-    "additions": [
-        "ADDITION_DECORATION",
-        "ADDITION_DELIVERY",
-        "ADDITION_INSURANCE"
-    ]
+    "additions": {
+        "ADDITION_DELIVERY": "pod dom",
+        "ADDITION_INSURANCE": "OC w axa pan tez cwiczy",
+        "ADDITION_DECORATION": "okleina"
+    }
 }
 ```
 
@@ -376,11 +462,12 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
     "protocolNumber": 420420420,
     "startDate": "2024-02-09",
     "endDate": "2024-02-11",
-    "additions": [
-        "ADDITION_DECORATION",
-        "ADDITION_DELIVERY",
-        "ADDITION_INSURANCE"
-    ]
+    "additions": {
+        "ADDITION_DELIVERY": "pod dom",
+        "ADDITION_INSURANCE": "OC w axa pan tez cwiczy",
+        "ADDITION_DECORATION": "okleina"
+    },
+    "cost": 950.4
 }
 ```
 
@@ -388,8 +475,8 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
 put /api/rental
 
 To specify destination and origin offices use _destinationOfficeId_ and _originOfficeId_ fields respectively.
-Fields _destinationOffice_ and _originOffice_ are **used only to return values**.
-(the difference is _id_ at the end)
+Fields _destinationOffice_ and _originOffice_ are **used only to return values**. (the difference is _id_ at the end)
+Only specifed additons are preserved in database, so in order to add new addition you also have to specify old ones. To delete addition just don't specify it.
 
 ##### Request
 ```json
@@ -398,10 +485,10 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
     "protocolNumber": 4,
     "originOfficeId": 6,
     "destinationOfficeId": 5,
-    "additions": [
-        "ADDITION_DECORATION",
-        "ADDITION_INSURANCE"
-    ]
+    "additions": {
+        "ADDITION_DECORATION": "okleina",
+        "ADDITION_INSURANCE": "OC w axa pan tez cwiczy"
+    }
 }
 ```
 ##### Response
@@ -432,28 +519,51 @@ Fields _destinationOffice_ and _originOffice_ are **used only to return values**
 delete /api/rental/{id}
 
 ### Statistics
+get /api/statistics
 ###### Package into JSON
 Variables:
 - Total cars
 - Cars that are rented
-- Cars that are in service
+- Cars that are in service, services cars are marked as available
 - Employees amount
 - Offices amount
 - Clients amount
-- Earnings statistics array (24 float numbers, most recent last, null if not present)
+- Earnings statistics array (24 float numbers, most recent last)
 ```json
-{
-	"cars_total": 68,
-	"cars_rented": 41,
-	"cars_service": 3,
-	"employees_total": 8,
-	"offices_total": 3,
-	"clients_total": 200,
-	"earnings_stats": [
-		121.3,
-		223.1,
-		421.1
-	]
+{	
+    "carCount": 1,
+    "rentedCars": 1,
+    "servicedCars": 0,
+    "availableCars": 0,
+    "clientCount": 1,
+    "officeCount": 3,
+    "employeeCount": 4,
+    "income": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1500.0,
+        0.0,
+        0.0,
+        1500.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        4200.0
+]
 }
 ```
 ## Client
