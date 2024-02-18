@@ -10,6 +10,7 @@ import shop.dziupla.spring.login.models.DAO.Role;
 import shop.dziupla.spring.login.models.Enums.ERole;
 import shop.dziupla.spring.login.repository.*;
 import shop.dziupla.spring.login.security.services.EmployeeService;
+import shop.dziupla.spring.login.security.services.RoleService;
 
 @SpringBootApplication
 public class DziuplaBackApplication  implements CommandLineRunner {
@@ -27,7 +28,7 @@ public class DziuplaBackApplication  implements CommandLineRunner {
 	@Autowired
 	EmployeeService service;
 	@Autowired
-	RoleRepository rr;
+	RoleService roleService;
 	@Autowired
 	DriverLicenseRepository driverLicenseRepository;
 	@Autowired
@@ -101,11 +102,11 @@ public class DziuplaBackApplication  implements CommandLineRunner {
 		//client.setCompanyInfo(companyInfo);
 		//clientRepository.save(client);
 
-		rr.save(new Role(ERole.ROLE_EMPLOYEE));
-        rr.save(new Role(ERole.ROLE_USER));
-        rr.save(new Role(ERole.ROLE_ADMIN));
-        rr.save(new Role(ERole.ROLE_EMPLOYEE_HR));
-        rr.save(new Role(ERole.ROLE_EMPLOYEE_MECHANIC));
+		roleService.saveIfNotExist(new Role(ERole.ROLE_EMPLOYEE));
+		roleService.saveIfNotExist(new Role(ERole.ROLE_USER));
+		roleService.saveIfNotExist(new Role(ERole.ROLE_ADMIN));
+		roleService.saveIfNotExist(new Role(ERole.ROLE_EMPLOYEE_HR));
+		roleService.saveIfNotExist(new Role(ERole.ROLE_EMPLOYEE_MECHANIC));
 
 		//CompanyInfo companyInfo = new CompanyInfo("firma2", 22241232);
 		//companyInfoRepository.save(companyInfo);
