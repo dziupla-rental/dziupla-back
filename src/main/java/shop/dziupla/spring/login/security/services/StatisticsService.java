@@ -32,13 +32,13 @@ public class StatisticsService {
         }
         result.setAvailableCars(availableCounter);
         result.setServicedCars(carRepository.countAllByTechnicalStatus(false));
-        result.setRentedCars(result.getCarCount() - result.getAvailableCars() - result.getServicedCars());
+        result.setRentedCars(result.getCarCount() - result.getAvailableCars());
         result.setEmployeeCount(employeeRepository.count());
         result.setOfficeCount(officeRepository.count());
         result.setClientCount(clientRepository.count());
-        var date = LocalDate.now().minusYears(1).withDayOfMonth(1);
+        var date = LocalDate.now().minusYears(2).withDayOfMonth(1);
         ArrayList<Double> incomeList = new ArrayList<>();
-        for(var x = 0; x < 12; x++){
+        for(var x = 0; x < 24; x++){
             var results = rentalRepository.getAllByEndDateBetween(date, date.plusMonths(1));
             Double value = 0.0;
             for(var  y : results){
