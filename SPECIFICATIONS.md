@@ -367,6 +367,10 @@ Response would be:
 `get api/car/carByOffice/location/functional`
 - returns only functional cars from location given by location
 
+`get api/car/carByDate?params=1&params=16-12-2023&params=24-12-2023`
+- filter by date, returns list of available cars in chosen location
+  
+
 ## Photo
 ### Get all photos
 get /api/photo
