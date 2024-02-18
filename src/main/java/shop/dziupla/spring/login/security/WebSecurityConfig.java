@@ -91,6 +91,8 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                                 .requestMatchers("/api/rental").permitAll()
                                 .requestMatchers("/api/car/**").permitAll()
                                 .requestMatchers("/api/car").permitAll()
+                                .requestMatchers("/api/carByDate/**").permitAll()
+                                .requestMatchers("/api/carByDate").permitAll()
                                 .requestMatchers("/api/car/service/**").permitAll()
                                 .requestMatchers("/api/car/service").permitAll()
                                 .requestMatchers("/api/car/functionalCar/**").permitAll()

@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shop.dziupla.spring.login.mappers.CarMapper;
 import shop.dziupla.spring.login.models.DAO.Car;
+import shop.dziupla.spring.login.models.DAO.Office;
 import shop.dziupla.spring.login.payload.response.CarDTO;
 import shop.dziupla.spring.login.repository.CarRepository;
 import shop.dziupla.spring.login.repository.OfficeRepository;
+import shop.dziupla.spring.login.repository.RentalRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +21,8 @@ public class CarService {
     CarRepository repository;
     @Autowired
     OfficeRepository officeRepository;
+    @Autowired
+    RentalRepository rentalRepository;
     @Autowired
     CarMapper mapper;
 
@@ -88,7 +93,7 @@ public class CarService {
             if(c.getOffice()==null){
                 continue;
             }
-            if (c.getOffice().getLocation().equals(location) && c.isAvailable()) {
+            if (c.getOffice().getLocation().equals(location)) {
                 list.add(mapper.carToCarDTO(c));
             }
         }
@@ -102,7 +107,7 @@ public class CarService {
             if(c.getOffice()==null){
                 continue;
             }
-            if (c.getOffice().getId().equals(id) && c.isAvailable()) {
+            if (c.getOffice().getId().equals(id)) {
                 list.add(mapper.carToCarDTO(c));
             }
         }
@@ -120,5 +125,25 @@ public class CarService {
         Car carDAO = repository.getReferenceById(car.getId());
         mapper.updateCarFromDTO(car, carDAO);
         return mapper.carToCarDTO(repository.save(carDAO));
+    }
+
+    public List<CarDTO> getAvailableByDateAndLocation(Long officeId, LocalDate startDate, LocalDate endDate){
+        if(startDate.isAfter(endDate)) throw new IllegalArgumentException();
+        Office office = officeRepository.getReferenceById(officeId);
+        var carsByOffice = repository.getCarsByOffice(office);
+        var result = new ArrayList<CarDTO>();
+        for(var car : carsByOffice) {
+            var date = startDate;
+            result.add(mapper.carToCarDTO(car));
+            while (!date.isEqual(endDate)) {
+                if(!rentalRepository.existsByDateBetweenStartAndEnd(car.getId(), date)){
+                    result.remove(result.size() -1);
+                    break;
+                }
+                date = date.plusDays(1);
+            }
+        }
+
+       return result;
     }
 }

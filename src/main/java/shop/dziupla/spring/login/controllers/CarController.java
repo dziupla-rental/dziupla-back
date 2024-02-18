@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import shop.dziupla.spring.login.payload.response.CarDTO;
 import shop.dziupla.spring.login.security.services.CarService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -36,9 +38,19 @@ public class CarController {
         }
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<CarDTO>> getAvailableByDateAndLocation(@RequestParam String officeId, @RequestParam String startDate, @RequestParam String endDate){
-        return null;
+    @GetMapping("/carByDate")
+    public ResponseEntity<List<CarDTO>> getAvailableByDateAndLocation(@RequestParam List<String> params){
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            return new ResponseEntity<>(service.getAvailableByDateAndLocation(Long.valueOf(params.get(0)), LocalDate.parse(params.get(1), formatter), LocalDate.parse(params.get(2), formatter)), HttpStatus.OK);
+        }
+        catch( NullPointerException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch(EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PostMapping("")
