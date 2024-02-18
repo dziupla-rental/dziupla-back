@@ -43,8 +43,6 @@ public abstract class RentalMapper {
     @Mapping(target = "car", source = "carId", qualifiedByName = "getCarById")
     @Mapping(target = "originOffice", source = "originOfficeId", qualifiedByName = "getOfficeById1")
     @Mapping(target = "destinationOffice", source = "destinationOfficeId", qualifiedByName = "getOfficeById1")
-    //@Mapping(target = "cost", source = "dto", qualifiedByName = "calculateCost")
-    //@Mapping(target = "cost", expression = "java((dto.getCost() != null ? calculateCost(dto) : entity.getCost()))")
     @Mapping(target = "cost", expression = "java(updateCost(new Pair<RentalDTO, Rental>(dto, entity)))")
     public abstract void updateRentalFromDTO(RentalDTO dto, @MappingTarget Rental entity);
 
@@ -81,8 +79,8 @@ public abstract class RentalMapper {
     Float calculateCost(RentalDTO rental){
         try {
             Float result = carRepository.getReferenceById(rental.getCarId()).getCost();
-            for (var add : rental.getAdditions()) {
-                result += EAddition.valueOf(add).getPrice();
+            for (var add : rental.getAdditions().entrySet()) {
+                result += EAddition.valueOf(add.getKey()).getPrice();
             }
             return result;
         }
@@ -95,8 +93,8 @@ public abstract class RentalMapper {
     @Named("calculateCost1")
     Float calculateCost1(Rental rental){
         Float result = carRepository.getReferenceById(rental.getCar().getId()).getCost();
-        for(var add : rental.getAdditions()){
-            result += add.getPrice();
+        for(var add : rental.getAdditions().entrySet()){
+            result += add.getKey().getPrice();
         }
         return result;
     }
@@ -105,35 +103,35 @@ public abstract class RentalMapper {
     Float updateCost(Pair<RentalDTO, Rental> pair){
         try {
             RentalDTO tempDto = pair.getValue0();
-            Rental tempEnitty = pair.getValue1();
-            float result = tempEnitty.getCar().getCost();
+            Rental tempEntity = pair.getValue1();
+            float result = tempEntity.getCar().getCost();
 
             if(tempDto.getCarId() != null) {
                 result = carRepository.getReferenceById(tempDto.getCarId()).getCost();
 
                 if(tempDto.getAdditions() != null) {
-                    for (var add : tempDto.getAdditions()) {
-                        result += EAddition.valueOf(add).getPrice();
+                    for (var add : tempDto.getAdditions().entrySet()) {
+                        result += EAddition.valueOf(add.getKey()).getPrice();
                     }
                     return result;
                 }
                 else {
-                    for (var add : tempEnitty.getAdditions()) {
-                        result += add.getPrice();
+                    for (var add : tempEntity.getAdditions().entrySet()) {
+                        result += add.getKey().getPrice();
                     }
                     return result;
                 }
             }
 
             if(tempDto.getAdditions() != null) {
-                for (var add : tempDto.getAdditions()) {
-                    result += EAddition.valueOf(add).getPrice();
+                for (var add : tempDto.getAdditions().entrySet()) {
+                    result += EAddition.valueOf(add.getKey()).getPrice();
                 }
                 return result;
             }
             else {
-                for (var add : tempEnitty.getAdditions()) {
-                    result += add.getPrice();
+                for (var add : tempEntity.getAdditions().entrySet()) {
+                    result += add.getKey().getPrice();
                 }
                 return result;
             }

@@ -8,6 +8,7 @@ import shop.dziupla.spring.login.models.Enums.EAddition;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "rentals",
@@ -49,16 +50,26 @@ public class Rental {
     private LocalDate endDate;
 
     private Float cost;
-    @ElementCollection(targetClass = EAddition.class)
+
+    @ElementCollection
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "rental_additions")
-    @Column(name = "addition")
-    private List<EAddition> additions;
+    @CollectionTable(name = "rental_additions",
+    joinColumns = {@JoinColumn(name = "rental_id",
+    referencedColumnName = "id")})
+    @MapKeyColumn(name = "addition")
+    @Column(name = "info")
+    private Map<EAddition, String> additions;
+
+//    @ElementCollection(targetClass = EAddition.class)
+//    @Enumerated(EnumType.STRING)
+//    @CollectionTable(name = "rental_additions")
+//    @Column(name = "addition")
+//    private List<EAddition> additions;
 
 
     public Rental() {}
     public Rental(Car car, Client client, Office originOffice, Office destinationOffice, Long protocolNumber,
-                  LocalDate startDate, LocalDate endDate, List<EAddition> additions) {
+                  LocalDate startDate, LocalDate endDate, Map<EAddition, String> additions) {
         this.car = car;
         this.client = client;
         this.originOffice = originOffice;
@@ -93,23 +104,17 @@ public class Rental {
     public LocalDate getEndDate() { return endDate; }
     public void setEndDate(LocalDate end) { this.endDate = end; }
 
-    public List<EAddition> getAdditions() {
-        try {
-            additions.isEmpty();
-            return additions;
-        }
-        catch (Exception ex){
-            return null;
-        }
+    public Map<EAddition, String> getAdditions() {
+        return additions;
     }
 
-    public void setAdditions(List<EAddition> additions) { this.additions = additions; }
+    public void setAdditions(Map<EAddition, String> additions) { this.additions = additions; }
 
     public Float getCost() {
         if(cost == null) {
             cost = car.getCost();
-            for (var x : additions) {
-                cost += x.getPrice();
+            for (var entry : additions.entrySet()) {
+                cost += entry.getKey().getPrice();
             }
         }
         return cost;

@@ -89,6 +89,7 @@ public class RentalController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         catch (NullPointerException | IllegalArgumentException ex) {
+            ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
