@@ -133,8 +133,13 @@ public class CarService {
         var carsByOffice = repository.getCarsByOffice(office);
         var result = new ArrayList<CarDTO>();
         for(var car : carsByOffice) {
+
             var date = startDate;
             result.add(mapper.carToCarDTO(car));
+            if(!car.isTechnicalStatus()){
+                result.remove(result.size() -1);
+                continue;
+            }
             while (!date.isAfter(endDate)) {
                 if(!rentalRepository.existsByDateBetweenStartAndEnd(car.getId(), date)){
                     result.remove(result.size() -1);
