@@ -135,7 +135,7 @@ public class CarService {
         for(var car : carsByOffice) {
             var date = startDate;
             result.add(mapper.carToCarDTO(car));
-            while (!date.isEqual(endDate)) {
+            while (!date.isAfter(endDate)) {
                 if(!rentalRepository.existsByDateBetweenStartAndEnd(car.getId(), date)){
                     result.remove(result.size() -1);
                     break;
